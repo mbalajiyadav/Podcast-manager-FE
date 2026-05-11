@@ -1,0 +1,200 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+  .screen{background:#FDFBD4;border:1px solid #38240D22;border-radius:12px;overflow:hidden}
+  .nav{background:#38240D;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+  .logo{color:#C05800;font-size:18px;font-weight:700}
+  .logo span{color:#FDFBD4}
+  .nav-center{color:#FDFBD4aa;font-size:12px;background:#71360033;padding:4px 14px;border-radius:20px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:#C05800;display:flex;align-items:center;justify-content:center;color:#FDFBD4;font-size:12px;font-weight:600}
+  .layout{display:flex;min-height:760px}
+  .sidebar{width:200px;background:#38240D;padding:20px 0;flex-shrink:0}
+  .side-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#FDFBD444;padding:0 20px;margin-bottom:10px;text-transform:uppercase}
+  .side-section{margin-bottom:24px}
+  .side-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:#FDFBD4aa;cursor:pointer}
+  .side-item.active{background:#C0580033;color:#FDFBD4;font-weight:600;border-right:3px solid #C05800}
+  .side-item i{font-size:16px}
+  .badge-dot{background:#C05800;color:#FDFBD4;font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:auto}
+  .main{flex:1;padding:24px;overflow:hidden}
+  .page-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+  .page-title{font-size:20px;font-weight:700;color:#38240D}
+  .page-sub{font-size:13px;color:#71360099;margin-top:2px}
+  .date-filter{display:flex;gap:6px}
+  .df-btn{padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:1px solid #71360033;background:transparent;color:#713600}
+  .df-btn.active{background:#C05800;border-color:#C05800;color:#FDFBD4;font-weight:600}
+  .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+  .metric-card{background:#fff;border:1px solid #71360018;border-radius:10px;padding:16px 18px}
+  .mc-label{font-size:11px;color:#71360077;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+  .mc-label i{font-size:13px;color:#C05800}
+  .mc-num{font-size:26px;font-weight:700;color:#38240D;margin-bottom:3px}
+  .mc-change{font-size:11px;display:flex;align-items:center;gap:4px}
+  .mc-change.up{color:#1a7a3c}
+  .mc-change.neutral{color:#71360077}
+  .charts-top{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .chart-card{background:#fff;border:1px solid #71360018;border-radius:10px;padding:18px}
+  .chart-title{font-size:14px;font-weight:600;color:#38240D;margin-bottom:4px}
+  .chart-sub{font-size:12px;color:#71360077;margin-bottom:14px}
+  .charts-bottom{display:grid;grid-template-columns:1fr;gap:16px}
+  .label-bar{font-size:11px;color:#71360055;text-align:center;padding:6px;font-style:italic;background:#FDFBD4}
+</style>
+
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-center"><i class="ti ti-shield-check" style="font-size:12px;vertical-align:-1px"></i> Admin panel</div>
+    <div class="avatar">AD</div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-label">Admin</div>
+        <div class="side-item"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+        <div class="side-item"><i class="ti ti-clock-hour-3" aria-hidden="true"></i> Approval queue <span class="badge-dot">8</span></div>
+        <div class="side-item"><i class="ti ti-users" aria-hidden="true"></i> All users</div>
+        <div class="side-item"><i class="ti ti-file-music" aria-hidden="true"></i> All episodes</div>
+        <div class="side-item active"><i class="ti ti-chart-bar" aria-hidden="true"></i> Platform stats</div>
+        <div class="side-item"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="page-head">
+        <div>
+          <div class="page-title">Platform stats</div>
+          <div class="page-sub">Live overview of content, plays, and users</div>
+        </div>
+        <div class="date-filter">
+          <button class="df-btn">7d</button>
+          <button class="df-btn active">30d</button>
+          <button class="df-btn">90d</button>
+          <button class="df-btn">All</button>
+        </div>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="mc-label"><i class="ti ti-file-music" aria-hidden="true"></i> Total episodes</div>
+          <div class="mc-num">2,418</div>
+          <div class="mc-change up"><i class="ti ti-arrow-up-right" style="font-size:12px"></i> +64 this month</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-label"><i class="ti ti-player-play" aria-hidden="true"></i> Total plays</div>
+          <div class="mc-num">1.24M</div>
+          <div class="mc-change up"><i class="ti ti-arrow-up-right" style="font-size:12px"></i> +18% vs last month</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-label"><i class="ti ti-microphone-2" aria-hidden="true"></i> Active hosts</div>
+          <div class="mc-num">184</div>
+          <div class="mc-change up"><i class="ti ti-arrow-up-right" style="font-size:12px"></i> +12 this month</div>
+        </div>
+        <div class="metric-card">
+          <div class="mc-label"><i class="ti ti-headphones" aria-hidden="true"></i> Listeners</div>
+          <div class="mc-num">12,400</div>
+          <div class="mc-change up"><i class="ti ti-arrow-up-right" style="font-size:12px"></i> +340 this week</div>
+        </div>
+      </div>
+
+      <div class="charts-top">
+        <div class="chart-card">
+          <div class="chart-title">Daily plays — last 30 days</div>
+          <div class="chart-sub">Total episode plays per day across the platform</div>
+          <div id="areaChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Episode queue health</div>
+          <div class="chart-sub">Breakdown of all episodes by current status</div>
+          <div id="donutChart"></div>
+        </div>
+      </div>
+
+      <div class="charts-bottom">
+        <div class="chart-card">
+          <div class="chart-title">Plays by category</div>
+          <div class="chart-sub">Total plays per content category — all time</div>
+          <div id="barChart"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="label-bar">Admin: Platform stats screen</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.41.0/apexcharts.min.js"></script>
+<script>
+const brown = '#38240D';
+const orange = '#C05800';
+const tan = '#713600';
+const cream = '#FDFBD4';
+const light = '#71360022';
+
+function getDates(n){
+  const d=[];
+  const now=new Date('2026-05-11');
+  for(let i=n-1;i>=0;i--){
+    const dt=new Date(now);
+    dt.setDate(dt.getDate()-i);
+    d.push(dt.toLocaleDateString('en-GB',{day:'2-digit',month:'short'}));
+  }
+  return d;
+}
+
+function randSeries(n,min,max){
+  const a=[];
+  let v=Math.floor((min+max)/2);
+  for(let i=0;i<n;i++){
+    v=Math.max(min,Math.min(max,v+Math.floor((Math.random()-0.48)*(max-min)*0.18)));
+    a.push(v);
+  }
+  return a;
+}
+
+const areaOpts={
+  series:[{name:'Plays',data:randSeries(30,2800,9200)}],
+  chart:{type:'area',height:220,toolbar:{show:false},sparkline:{enabled:false},background:'transparent'},
+  colors:[orange],
+  fill:{type:'gradient',gradient:{shadeIntensity:1,opacityFrom:0.35,opacityTo:0.02,stops:[0,100]}},
+  stroke:{curve:'smooth',width:2},
+  dataLabels:{enabled:false},
+  xaxis:{categories:getDates(30),labels:{show:true,rotate:0,style:{fontSize:'10px',colors:Array(30).fill(tan)},formatter:(v,i)=>i%6===0?v:''},axisBorder:{show:false},axisTicks:{show:false},tooltip:{enabled:false}},
+  yaxis:{labels:{style:{fontSize:'10px',colors:[tan]},formatter:v=>v>=1000?(v/1000).toFixed(1)+'k':v}},
+  grid:{borderColor:light,strokeDashArray:4,xaxis:{lines:{show:false}}},
+  tooltip:{theme:'light',y:{formatter:v=>v.toLocaleString()+' plays'}},
+  markers:{size:0}
+};
+
+const donutOpts={
+  series:[2184,148,86],
+  chart:{type:'donut',height:220,toolbar:{show:false},background:'transparent'},
+  labels:['Approved','Pending','Rejected'],
+  colors:[orange,tan,'#38240D'],
+  dataLabels:{enabled:false},
+  legend:{position:'bottom',fontSize:'12px',labels:{colors:[brown,brown,brown]},markers:{width:10,height:10,radius:3}},
+  plotOptions:{pie:{donut:{size:'68%',labels:{show:true,total:{show:true,label:'Total',fontSize:'11px',color:tan,formatter:()=>'2,418'},value:{fontSize:'22px',fontWeight:700,color:brown,formatter:v=>Number(v).toLocaleString()}}}}}},
+  stroke:{width:0},
+  tooltip:{y:{formatter:v=>v.toLocaleString()+' episodes'}}
+};
+
+const categories=['Music & DJ','Business','True Crime','Health','Comedy','News','Sports','Self-improvement','History','Religion'];
+const plays=[312000,245000,198000,167000,134000,112000,98000,76000,54000,41000];
+
+const barOpts={
+  series:[{name:'Total plays',data:plays}],
+  chart:{type:'bar',height:260,toolbar:{show:false},background:'transparent'},
+  colors:[orange],
+  plotOptions:{bar:{horizontal:true,borderRadius:4,barHeight:'58%',distributed:false}},
+  dataLabels:{enabled:true,style:{fontSize:'11px',colors:[cream]},formatter:v=>v>=1000?(v/1000).toFixed(0)+'k':''},
+  xaxis:{categories,labels:{style:{fontSize:'11px',colors:[tan]},formatter:v=>v>=1000?(v/1000).toFixed(0)+'k':''},axisBorder:{show:false},axisTicks:{show:false}},
+  yaxis:{labels:{style:{fontSize:'12px',colors:[brown]}}},
+  grid:{borderColor:light,strokeDashArray:4,yaxis:{lines:{show:false}}},
+  tooltip:{y:{formatter:v=>v.toLocaleString()+' plays'}},
+  states:{hover:{filter:{type:'none'}}}
+};
+
+window.addEventListener('load',()=>{
+  new ApexCharts(document.getElementById('areaChart'),areaOpts).render();
+  new ApexCharts(document.getElementById('donutChart'),donutOpts).render();
+  new ApexCharts(document.getElementById('barChart'),barOpts).render();
+});
+</script>

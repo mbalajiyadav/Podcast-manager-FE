@@ -1,0 +1,109 @@
+.stats-page {
+  padding: 24px;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #38240D;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: rgba(113, 54, 0, 0.6);
+  margin-top: 2px;
+}
+
+.date-filter {
+  display: flex;
+  gap: 6px;
+}
+
+.df-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(113, 54, 0, 0.2);
+  background: transparent;
+  color: #713600;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.df-btn.active {
+  background: #C05800;
+  border-color: #C05800;
+  color: #FDFBD4;
+  font-weight: 600;
+}
+
+.charts-top {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.chart-card {
+  background: #fff;
+  border: 1px solid rgba(113, 54, 0, 0.1);
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.chart-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #38240D;
+  margin-bottom: 4px;
+}
+
+.chart-sub {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.45);
+  margin-bottom: 14px;
+}
+
+.charts-bottom {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.label-bar {
+  font-size: 11px;
+  color: rgba(113, 54, 0, 0.3);
+  text-align: center;
+  padding: 6px;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .charts-top {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .page-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .date-filter {
+    width: 100%;
+  }
+  .df-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
