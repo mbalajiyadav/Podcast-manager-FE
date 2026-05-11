@@ -1,0 +1,169 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  .screen { background: #FDFBD4; border: 1px solid #38240D22; border-radius: 12px; overflow: hidden; }
+  .nav { background: #38240D; padding: 0 28px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { color: #C05800; font-size: 18px; font-weight: 700; }
+  .logo span { color: #FDFBD4; }
+  .nav-center { color: #FDFBD4aa; font-size: 12px; background: #71360033; padding: 4px 14px; border-radius: 20px; }
+  .nav-right { display: flex; gap: 16px; align-items: center; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #C05800; display: flex; align-items: center; justify-content: center; color: #FDFBD4; font-size: 12px; font-weight: 600; }
+  .layout { display: flex; min-height: 640px; }
+  .sidebar { width: 200px; background: #38240D; padding: 20px 0; flex-shrink: 0; }
+  .side-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #FDFBD444; padding: 0 20px; margin-bottom: 10px; text-transform: uppercase; }
+  .side-section { margin-bottom: 24px; }
+  .side-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: #FDFBD4aa; cursor: pointer; }
+  .side-item.active { background: #C0580033; color: #FDFBD4; font-weight: 600; border-right: 3px solid #C05800; }
+  .side-item i { font-size: 16px; }
+  .badge-dot { background: #C05800; color: #FDFBD4; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: auto; }
+  .main { flex: 1; padding: 24px; }
+  .page-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .page-title { font-size: 20px; font-weight: 700; color: #38240D; }
+  .page-sub { font-size: 13px; color: #71360099; margin-top: 2px; }
+  .controls-row { display: flex; gap: 10px; align-items: center; }
+  .search-wrap { position: relative; }
+  .search-wrap i { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #71360066; font-size: 14px; }
+  .search-wrap input { height: 36px; background: #fff; border: 1px solid #71360022; border-radius: 8px; padding: 0 12px 0 32px; font-size: 12px; color: #38240D; outline: none; width: 200px; }
+  .filter-select { height: 36px; background: #fff; border: 1px solid #71360022; border-radius: 8px; padding: 0 10px; font-size: 12px; color: #713600; outline: none; }
+  .users-table { width: 100%; background: #fff; border: 1px solid #71360018; border-radius: 10px; overflow: hidden; border-collapse: collapse; }
+  .users-table th { background: #38240D0A; padding: 10px 16px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #71360077; border-bottom: 1px solid #71360018; }
+  .users-table td { padding: 13px 16px; font-size: 13px; color: #38240D; border-bottom: 1px solid #71360010; vertical-align: middle; }
+  .users-table tr:last-child td { border-bottom: none; }
+  .users-table tr:hover td { background: #71360006; }
+  .user-cell { display: flex; align-items: center; gap: 10px; }
+  .user-ava { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #FDFBD4; font-weight: 600; flex-shrink: 0; }
+  .u-name { font-size: 13px; font-weight: 600; color: #38240D; }
+  .u-email { font-size: 11px; color: #71360077; }
+  .role-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+  .role-host { background: #C0580018; color: #C05800; }
+  .role-listener { background: #38240D18; color: #38240D; }
+  .role-admin { background: #71360022; color: #713600; }
+  .status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .status-active { background: #1a7a3c18; color: #1a7a3c; }
+  .status-inactive { background: #71360018; color: #71360099; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+  .dot-a { background: #1a7a3c; }
+  .dot-i { background: #71360055; }
+  .actions { display: flex; gap: 6px; }
+  .act { border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+  .act-view { background: #71360015; color: #713600; }
+  .act-suspend { background: #a32d2d15; color: #a32d2d; }
+  .act-restore { background: #1a7a3c15; color: #1a7a3c; }
+  .pagination { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .pag-info { font-size: 12px; color: #71360077; }
+  .pag-btns { display: flex; gap: 6px; }
+  .pag-btn { border: 1px solid #71360022; background: #fff; color: #713600; border-radius: 6px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+  .pag-btn.active { background: #C05800; border-color: #C05800; color: #FDFBD4; }
+  .label { font-size: 11px; color: #71360055; text-align: center; padding: 4px; font-style: italic; background: #FDFBD4; }
+</style>
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-center"><i class="ti ti-shield-check" style="font-size:12px; vertical-align:-1px"></i> Admin panel</div>
+    <div class="nav-right"><div class="avatar">AD</div></div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-label">Admin</div>
+        <div class="side-item"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+        <div class="side-item"><i class="ti ti-clock-hour-3" aria-hidden="true"></i> Approval queue<span class="badge-dot">8</span></div>
+        <div class="side-item active"><i class="ti ti-users" aria-hidden="true"></i> All users</div>
+        <div class="side-item"><i class="ti ti-file-music" aria-hidden="true"></i> All episodes</div>
+        <div class="side-item"><i class="ti ti-chart-bar" aria-hidden="true"></i> Platform stats</div>
+        <div class="side-item"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="page-head">
+        <div><div class="page-title">User accounts</div><div class="page-sub">12,584 total users</div></div>
+        <div class="controls-row">
+          <div class="search-wrap"><i class="ti ti-search" aria-hidden="true"></i><input placeholder="Search users…" /></div>
+          <select class="filter-select"><option>All roles</option><option>Hosts</option><option>Listeners</option></select>
+          <select class="filter-select"><option>All statuses</option><option>Active</option><option>Inactive</option></select>
+        </div>
+      </div>
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Role</th>
+            <th>Episodes / Plays</th>
+            <th>Joined</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#713600">PM</div><div><div class="u-name">Priya Menon</div><div class="u-email">priya@example.com</div></div></div></td>
+            <td><span class="role-badge role-host">Host</span></td>
+            <td>24 eps · 142k plays</td>
+            <td>Jan 12, 2026</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#C05800">AS</div><div><div class="u-name">Arjun Sharma</div><div class="u-email">arjun@example.com</div></div></div></td>
+            <td><span class="role-badge role-host">Host</span></td>
+            <td>43 eps · 62k plays</td>
+            <td>Feb 4, 2026</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#38240D">NK</div><div><div class="u-name">Neha Kulkarni</div><div class="u-email">neha@example.com</div></div></div></td>
+            <td><span class="role-badge role-listener">Listener</span></td>
+            <td>— · 2.1k plays</td>
+            <td>Mar 17, 2026</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#71360088">ZH</div><div><div class="u-name">Zaid Hussain</div><div class="u-email">zaid@example.com</div></div></div></td>
+            <td><span class="role-badge role-listener">Listener</span></td>
+            <td>— · 880 plays</td>
+            <td>Apr 2, 2026</td>
+            <td><span class="status-badge status-inactive"><span class="status-dot dot-i"></span>Inactive</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-restore">Restore</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#C05800">RK</div><div><div class="u-name">Ravi Krishnan</div><div class="u-email">ravi@example.com</div></div></div></td>
+            <td><span class="role-badge role-host">Host</span></td>
+            <td>18 eps · 38k plays</td>
+            <td>Dec 29, 2025</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#713600">MS</div><div><div class="u-name">Meera Singh</div><div class="u-email">meera@example.com</div></div></div></td>
+            <td><span class="role-badge role-host">Host</span></td>
+            <td>9 eps · 11k plays</td>
+            <td>Apr 21, 2026</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+          <tr>
+            <td><div class="user-cell"><div class="user-ava" style="background:#38240D">CN</div><div><div class="u-name">Coach Nair</div><div class="u-email">coach.nair@example.com</div></div></div></td>
+            <td><span class="role-badge role-host">Host</span></td>
+            <td>6 eps · 4.8k plays</td>
+            <td>May 9, 2026</td>
+            <td><span class="status-badge status-active"><span class="status-dot dot-a"></span>Active</span></td>
+            <td><div class="actions"><button class="act act-view"><i class="ti ti-eye" style="font-size:11px"></i> View</button><button class="act act-suspend">Suspend</button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <div class="pag-info">Showing 7 of 12,584 users</div>
+        <div class="pag-btns">
+          <button class="pag-btn">← Prev</button>
+          <button class="pag-btn active">1</button>
+          <button class="pag-btn">2</button>
+          <button class="pag-btn">3</button>
+          <button class="pag-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Screen 10 / 10 — Admin: User management</div>
+</div>

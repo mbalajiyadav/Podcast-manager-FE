@@ -1,0 +1,161 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  .screen { background: #FDFBD4; min-height: 700px; border: 1px solid #38240D22; border-radius: 12px; overflow: hidden; }
+  .nav { background: #38240D; padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { color: #C05800; font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
+  .logo span { color: #FDFBD4; }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-link { color: #FDFBD4aa; font-size: 13px; text-decoration: none; }
+  .nav-btn { background: #C05800; color: #FDFBD4; font-size: 13px; padding: 7px 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: 500; }
+  .nav-btn-ghost { background: transparent; border: 1px solid #FDFBD455; color: #FDFBD4; font-size: 13px; padding: 7px 18px; border-radius: 6px; cursor: pointer; }
+  .hero { padding: 72px 40px 60px; display: flex; gap: 48px; align-items: center; }
+  .hero-left { flex: 1; }
+  .hero-tag { background: #71360022; color: #713600; font-size: 11px; font-weight: 600; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; border: 1px solid #71360033; display: inline-block; margin-bottom: 20px; text-transform: uppercase; }
+  .hero-h1 { font-size: 42px; font-weight: 700; color: #38240D; line-height: 1.15; margin-bottom: 16px; }
+  .hero-h1 span { color: #C05800; }
+  .hero-sub { font-size: 15px; color: #713600; line-height: 1.7; margin-bottom: 32px; max-width: 460px; }
+  .hero-btns { display: flex; gap: 12px; }
+  .btn-primary { background: #C05800; color: #FDFBD4; padding: 12px 28px; border-radius: 8px; border: none; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .btn-secondary { background: transparent; color: #713600; padding: 12px 28px; border-radius: 8px; border: 1.5px solid #713600; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .hero-right { flex: 0 0 320px; }
+  .hero-card { background: #38240D; border-radius: 16px; padding: 24px; }
+  .now-playing { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #C05800; margin-bottom: 12px; font-weight: 600; }
+  .ep-thumb { width: 100%; height: 140px; background: #713600; border-radius: 10px; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; }
+  .ep-thumb i { font-size: 40px; color: #C05800; }
+  .ep-title { color: #FDFBD4; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .ep-host { color: #FDFBD4aa; font-size: 12px; margin-bottom: 16px; }
+  .progress { height: 3px; background: #71360055; border-radius: 2px; margin-bottom: 8px; }
+  .progress-fill { height: 3px; background: #C05800; border-radius: 2px; width: 40%; }
+  .time-row { display: flex; justify-content: space-between; font-size: 11px; color: #FDFBD455; margin-bottom: 16px; }
+  .player-controls { display: flex; justify-content: center; gap: 20px; align-items: center; }
+  .ctrl { color: #FDFBD4aa; font-size: 18px; }
+  .ctrl-play { width: 40px; height: 40px; background: #C05800; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FDFBD4; font-size: 18px; }
+  .stats-row { display: flex; gap: 32px; margin-top: 56px; }
+  .stat { }
+  .stat-n { font-size: 28px; font-weight: 700; color: #38240D; }
+  .stat-l { font-size: 12px; color: #71360099; margin-top: 2px; }
+  .section-title { font-size: 22px; font-weight: 700; color: #38240D; margin-bottom: 6px; }
+  .section-sub { font-size: 13px; color: #713600; margin-bottom: 28px; }
+  .categories { padding: 0 40px 48px; }
+  .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .cat-card { background: #38240D; border-radius: 10px; padding: 20px 16px; cursor: pointer; }
+  .cat-card i { font-size: 22px; color: #C05800; margin-bottom: 10px; display: block; }
+  .cat-name { color: #FDFBD4; font-size: 13px; font-weight: 500; }
+  .cat-count { color: #FDFBD455; font-size: 11px; margin-top: 2px; }
+  .episodes { padding: 0 40px 48px; }
+  .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .ep-card { background: #fff; border: 1px solid #71360022; border-radius: 10px; overflow: hidden; }
+  .ep-art { height: 100px; background: #713600; display: flex; align-items: center; justify-content: center; }
+  .ep-art i { font-size: 28px; color: #C05800; }
+  .ep-body { padding: 14px; }
+  .ep-cat { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #C05800; font-weight: 600; margin-bottom: 6px; }
+  .ep-card-title { font-size: 13px; font-weight: 600; color: #38240D; margin-bottom: 4px; line-height: 1.4; }
+  .ep-card-host { font-size: 11px; color: #71360099; margin-bottom: 10px; }
+  .ep-card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .ep-plays { font-size: 11px; color: #71360099; display: flex; align-items: center; gap: 4px; }
+  .ep-play-btn { background: #C05800; color: #FDFBD4; border: none; border-radius: 20px; padding: 5px 14px; font-size: 11px; font-weight: 600; cursor: pointer; }
+  .label { font-size: 11px; color: #71360055; text-align: center; padding: 4px 0; font-style: italic; }
+</style>
+
+<div class="screen">
+  <nav class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-links">
+      <a class="nav-link" href="#">Browse</a>
+      <a class="nav-link" href="#">Categories</a>
+      <a class="nav-link" href="#">Trending</a>
+      <button class="nav-btn-ghost">Log in</button>
+      <button class="nav-btn">Get started</button>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-left">
+      <div class="hero-tag">Your audio universe</div>
+      <h1 class="hero-h1">Discover stories<br>that move <span>you.</span></h1>
+      <p class="hero-sub">Stream thousands of podcast episodes across every genre. Hosted by creators who care, curated by an admin who approves only the best.</p>
+      <div class="hero-btns">
+        <button class="btn-primary">Start listening</button>
+        <button class="btn-secondary">Become a host</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat"><div class="stat-n">2.4k+</div><div class="stat-l">Episodes live</div></div>
+        <div class="stat"><div class="stat-n">180+</div><div class="stat-l">Active hosts</div></div>
+        <div class="stat"><div class="stat-n">12k+</div><div class="stat-l">Listeners</div></div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="now-playing"><i class="ti ti-wifi" style="font-size:12px"></i> Now playing</div>
+        <div class="ep-thumb"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+        <div class="ep-title">The Startup Grind #42</div>
+        <div class="ep-host">by Arjun Sharma</div>
+        <div class="progress"><div class="progress-fill"></div></div>
+        <div class="time-row"><span>18:22</span><span>44:00</span></div>
+        <div class="player-controls">
+          <div class="ctrl"><i class="ti ti-player-skip-back" aria-hidden="true"></i></div>
+          <div class="ctrl"><i class="ti ti-rewind-10" aria-hidden="true"></i></div>
+          <div class="ctrl-play"><i class="ti ti-player-pause" aria-hidden="true"></i></div>
+          <div class="ctrl"><i class="ti ti-fast-forward-10" aria-hidden="true"></i></div>
+          <div class="ctrl"><i class="ti ti-player-skip-forward" aria-hidden="true"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="categories">
+    <div class="section-title">Browse by category</div>
+    <div class="section-sub">Jump into what you love most</div>
+    <div class="cat-grid">
+      <div class="cat-card"><i class="ti ti-music" aria-hidden="true"></i><div class="cat-name">Music & DJ Mixes</div><div class="cat-count">312 episodes</div></div>
+      <div class="cat-card"><i class="ti ti-news" aria-hidden="true"></i><div class="cat-name">News & Affairs</div><div class="cat-count">198 episodes</div></div>
+      <div class="cat-card"><i class="ti ti-bulb" aria-hidden="true"></i><div class="cat-name">Business</div><div class="cat-count">245 episodes</div></div>
+      <div class="cat-card"><i class="ti ti-heart" aria-hidden="true"></i><div class="cat-name">Health & Wellness</div><div class="cat-count">167 episodes</div></div>
+    </div>
+  </div>
+
+  <div class="episodes">
+    <div class="section-title">Trending episodes</div>
+    <div class="section-sub">Most played this week</div>
+    <div class="ep-grid">
+      <div class="ep-card">
+        <div class="ep-art"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+        <div class="ep-body">
+          <div class="ep-cat">True Crime</div>
+          <div class="ep-card-title">The Vanishing of Room 12</div>
+          <div class="ep-card-host">Priya Menon</div>
+          <div class="ep-card-footer">
+            <div class="ep-plays"><i class="ti ti-player-play" style="font-size:12px" aria-hidden="true"></i> 8.2k plays</div>
+            <button class="ep-play-btn">Play</button>
+          </div>
+        </div>
+      </div>
+      <div class="ep-card">
+        <div class="ep-art" style="background:#38240D"><i class="ti ti-brain" aria-hidden="true"></i></div>
+        <div class="ep-body">
+          <div class="ep-cat">Self-improvement</div>
+          <div class="ep-card-title">Morning Rituals That Work</div>
+          <div class="ep-card-host">Ravi Krishnan</div>
+          <div class="ep-card-footer">
+            <div class="ep-plays"><i class="ti ti-player-play" style="font-size:12px" aria-hidden="true"></i> 6.7k plays</div>
+            <button class="ep-play-btn">Play</button>
+          </div>
+        </div>
+      </div>
+      <div class="ep-card">
+        <div class="ep-art" style="background:#71360088"><i class="ti ti-comedy" aria-hidden="true"></i></div>
+        <div class="ep-body">
+          <div class="ep-cat">Comedy</div>
+          <div class="ep-card-title">Totally Unscripted Ep. 9</div>
+          <div class="ep-card-host">Meera & Zaid</div>
+          <div class="ep-card-footer">
+            <div class="ep-plays"><i class="ti ti-player-play" style="font-size:12px" aria-hidden="true"></i> 5.1k plays</div>
+            <button class="ep-play-btn">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Screen 1 / 10 — Landing page (public)</div>
+</div>

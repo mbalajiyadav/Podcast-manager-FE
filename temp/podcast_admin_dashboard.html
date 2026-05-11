@@ -1,0 +1,161 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  .screen { background: #FDFBD4; border: 1px solid #38240D22; border-radius: 12px; overflow: hidden; }
+  .nav { background: #38240D; padding: 0 28px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { color: #C05800; font-size: 18px; font-weight: 700; }
+  .logo span { color: #FDFBD4; }
+  .nav-center { color: #FDFBD4aa; font-size: 12px; background: #71360033; padding: 4px 14px; border-radius: 20px; }
+  .nav-right { display: flex; gap: 16px; align-items: center; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #C05800; display: flex; align-items: center; justify-content: center; color: #FDFBD4; font-size: 12px; font-weight: 600; }
+  .layout { display: flex; min-height: 680px; }
+  .sidebar { width: 200px; background: #38240D; padding: 20px 0; flex-shrink: 0; }
+  .side-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #FDFBD444; padding: 0 20px; margin-bottom: 10px; text-transform: uppercase; }
+  .side-section { margin-bottom: 24px; }
+  .side-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: #FDFBD4aa; cursor: pointer; }
+  .side-item.active { background: #C0580033; color: #FDFBD4; font-weight: 600; border-right: 3px solid #C05800; }
+  .side-item i { font-size: 16px; }
+  .badge-dot { background: #C05800; color: #FDFBD4; font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: auto; }
+  .main { flex: 1; padding: 24px; }
+  .page-title { font-size: 20px; font-weight: 700; color: #38240D; margin-bottom: 18px; }
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+  .stat-card { background: #fff; border: 1px solid #71360018; border-radius: 10px; padding: 16px; }
+  .stat-label { font-size: 11px; color: #71360077; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+  .stat-label i { font-size: 13px; color: #C05800; }
+  .stat-num { font-size: 24px; font-weight: 700; color: #38240D; }
+  .stat-change { font-size: 11px; color: #71360077; margin-top: 2px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .section-title { font-size: 15px; font-weight: 600; color: #38240D; margin-bottom: 14px; }
+  .queue-list { display: flex; flex-direction: column; gap: 10px; }
+  .queue-item { background: #fff; border: 1px solid #71360018; border-radius: 10px; padding: 14px; }
+  .qi-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  .qi-title { font-size: 13px; font-weight: 600; color: #38240D; }
+  .qi-host { font-size: 11px; color: #71360099; margin-top: 2px; }
+  .qi-time { font-size: 10px; color: #71360066; }
+  .qi-desc { font-size: 12px; color: #71360099; line-height: 1.5; margin-bottom: 10px; }
+  .qi-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .qi-cat { background: #C0580015; color: #C05800; font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+  .qi-dur { font-size: 11px; color: #71360077; }
+  .qi-actions { display: flex; gap: 8px; }
+  .btn-approve { background: #1a7a3c; color: #fff; border: none; border-radius: 7px; padding: 7px 18px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+  .btn-reject { background: #a32d2d; color: #fff; border: none; border-radius: 7px; padding: 7px 18px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+  .btn-listen { background: transparent; border: 1px solid #71360033; color: #713600; border-radius: 7px; padding: 7px 14px; font-size: 12px; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+  .users-table { width: 100%; background: #fff; border: 1px solid #71360018; border-radius: 10px; overflow: hidden; border-collapse: collapse; }
+  .users-table th { background: #38240D0A; padding: 9px 14px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #71360077; border-bottom: 1px solid #71360015; }
+  .users-table td { padding: 10px 14px; font-size: 12px; color: #38240D; border-bottom: 1px solid #71360010; }
+  .users-table tr:last-child td { border-bottom: none; }
+  .role-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; font-weight: 700; }
+  .role-host { background: #C0580018; color: #C05800; }
+  .role-listener { background: #38240D18; color: #38240D; }
+  .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; }
+  .dot-active { background: #1a7a3c; }
+  .dot-inactive { background: #71360055; }
+  .label { font-size: 11px; color: #71360055; text-align: center; padding: 4px; font-style: italic; background: #FDFBD4; }
+</style>
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-center"><i class="ti ti-shield-check" style="font-size:12px; vertical-align:-1px"></i> Admin panel</div>
+    <div class="nav-right"><div class="avatar">AD</div></div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-label">Admin</div>
+        <div class="side-item active"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+        <div class="side-item"><i class="ti ti-clock-hour-3" aria-hidden="true"></i> Approval queue<span class="badge-dot">8</span></div>
+        <div class="side-item"><i class="ti ti-users" aria-hidden="true"></i> All users</div>
+        <div class="side-item"><i class="ti ti-file-music" aria-hidden="true"></i> All episodes</div>
+        <div class="side-item"><i class="ti ti-chart-bar" aria-hidden="true"></i> Platform stats</div>
+        <div class="side-item"><i class="ti ti-settings" aria-hidden="true"></i> Settings</div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="page-title">Platform overview</div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-file-music" aria-hidden="true"></i> Total episodes</div>
+          <div class="stat-num">2,418</div>
+          <div class="stat-change">Across all channels</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-player-play" aria-hidden="true"></i> Total plays</div>
+          <div class="stat-num">1.2M</div>
+          <div class="stat-change">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-microphone-2" aria-hidden="true"></i> Active hosts</div>
+          <div class="stat-num">184</div>
+          <div class="stat-change">+12 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-headphones" aria-hidden="true"></i> Listeners</div>
+          <div class="stat-num">12,400</div>
+          <div class="stat-change">+340 this week</div>
+        </div>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section-title">Pending approval (8)</div>
+          <div class="queue-list">
+            <div class="queue-item">
+              <div class="qi-top">
+                <div><div class="qi-title">The Startup Grind #44</div><div class="qi-host">by Arjun Sharma</div></div>
+                <div class="qi-time">2 hrs ago</div>
+              </div>
+              <div class="qi-desc">In this episode, three founders discuss finding product-market fit...</div>
+              <div class="qi-meta"><div class="qi-cat">Business</div><div class="qi-dur">51 min</div></div>
+              <div class="qi-actions">
+                <button class="btn-listen"><i class="ti ti-player-play" style="font-size:11px"></i> Preview</button>
+                <button class="btn-approve"><i class="ti ti-check" style="font-size:11px"></i> Approve</button>
+                <button class="btn-reject"><i class="ti ti-x" style="font-size:11px"></i> Reject</button>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="qi-top">
+                <div><div class="qi-title">Night Frequencies Vol. 5</div><div class="qi-host">by DJ Kapoor</div></div>
+                <div class="qi-time">5 hrs ago</div>
+              </div>
+              <div class="qi-desc">A smooth late-night mix blending deep house and electronic grooves...</div>
+              <div class="qi-meta"><div class="qi-cat">Music</div><div class="qi-dur">60 min</div></div>
+              <div class="qi-actions">
+                <button class="btn-listen"><i class="ti ti-player-play" style="font-size:11px"></i> Preview</button>
+                <button class="btn-approve"><i class="ti ti-check" style="font-size:11px"></i> Approve</button>
+                <button class="btn-reject"><i class="ti ti-x" style="font-size:11px"></i> Reject</button>
+              </div>
+            </div>
+            <div class="queue-item">
+              <div class="qi-top">
+                <div><div class="qi-title">Race Day Mindset</div><div class="qi-host">by Coach Nair</div></div>
+                <div class="qi-time">8 hrs ago</div>
+              </div>
+              <div class="qi-desc">Mental preparation techniques for endurance athletes on race day...</div>
+              <div class="qi-meta"><div class="qi-cat">Sports</div><div class="qi-dur">27 min</div></div>
+              <div class="qi-actions">
+                <button class="btn-listen"><i class="ti ti-player-play" style="font-size:11px"></i> Preview</button>
+                <button class="btn-approve"><i class="ti ti-check" style="font-size:11px"></i> Approve</button>
+                <button class="btn-reject"><i class="ti ti-x" style="font-size:11px"></i> Reject</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-title">Recent users</div>
+          <table class="users-table">
+            <thead><tr><th>Name</th><th>Role</th><th>Joined</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Ananya Iyer</td><td><span class="role-badge role-listener">Listener</span></td><td>May 10</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+              <tr><td>Coach Nair</td><td><span class="role-badge role-host">Host</span></td><td>May 9</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+              <tr><td>Zaid Hussain</td><td><span class="role-badge role-listener">Listener</span></td><td>May 9</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+              <tr><td>Meera Singh</td><td><span class="role-badge role-host">Host</span></td><td>May 8</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+              <tr><td>Rahul Das</td><td><span class="role-badge role-listener">Listener</span></td><td>May 7</td><td><span class="status-dot dot-inactive"></span>Inactive</td></tr>
+              <tr><td>Priya Menon</td><td><span class="role-badge role-host">Host</span></td><td>May 6</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+              <tr><td>Ravi Krishnan</td><td><span class="role-badge role-host">Host</span></td><td>May 5</td><td><span class="status-dot dot-active"></span>Active</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="label">Screen 8 / 10 — Admin: Dashboard & approval queue</div>
+</div>

@@ -1,0 +1,255 @@
+.host-dashboard {
+  padding: 24px;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.host-dashboard .page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--b-dark);
+  margin-bottom: 24px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: #fff;
+  border: 1px solid var(--b-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.5);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.stat-label i {
+  color: var(--b-accent);
+  display: flex;
+  align-items: center;
+}
+
+.stat-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--b-dark);
+}
+
+.stat-change {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.4);
+  margin-top: 4px;
+}
+
+.stat-change.up {
+  color: #1a7a3c;
+  font-weight: 500;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--b-dark);
+}
+
+.upload-btn {
+  background: var(--b-accent);
+  color: var(--b-bg);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.upload-btn:hover {
+  opacity: 0.9;
+}
+
+.table-container {
+  background: #fff;
+  border: 1px solid var(--b-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.ep-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.ep-table th {
+  background: rgba(56, 36, 13, 0.03);
+  padding: 14px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(113, 54, 0, 0.5);
+  border-bottom: 1px solid var(--b-border);
+}
+
+.ep-table td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--b-dark);
+  border-bottom: 1px solid rgba(113, 54, 0, 0.05);
+  vertical-align: middle;
+}
+
+.ep-table tr:last-child td {
+  border-bottom: none;
+}
+
+.ep-table tr:hover td {
+  background: rgba(113, 54, 0, 0.02);
+}
+
+.ep-name {
+  font-weight: 600;
+}
+
+.ep-cat {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.6);
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.badge.approved {
+  background: rgba(26, 122, 60, 0.1);
+  color: #1a7a3c;
+}
+
+.badge.pending {
+  background: rgba(192, 88, 0, 0.1);
+  color: var(--b-accent);
+}
+
+.badge.rejected {
+  background: rgba(163, 45, 45, 0.1);
+  color: #a32d2d;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.act-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s;
+}
+
+.act-edit {
+  background: rgba(113, 54, 0, 0.08);
+  color: var(--b-dark);
+}
+
+.act-edit:hover {
+  background: rgba(113, 54, 0, 0.15);
+}
+
+.act-del {
+  background: rgba(163, 45, 45, 0.08);
+  color: #a32d2d;
+}
+
+.act-del:hover {
+  background: rgba(163, 45, 45, 0.15);
+}
+
+.host-loading {
+  padding: 80px;
+  text-align: center;
+  color: rgba(113, 54, 0, 0.5);
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .ep-table th:nth-child(3),
+  .ep-table td:nth-child(3),
+  .ep-table th:nth-child(4),
+  .ep-table td:nth-child(4) {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .host-dashboard {
+    padding: 16px;
+  }
+
+  .stats-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .upload-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ep-table {
+    min-width: 450px;
+  }
+}

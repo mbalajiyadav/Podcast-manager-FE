@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --b-bg: #FDFBD4;
+  --b-dark: #38240D;
+  --b-accent: #C05800;
+  --b-border: #71360022;
+  --b-sidebar-bg: rgba(56, 36, 13, 0.05);
+}
+
+.browse-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--b-bg);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Nav */
+.b-nav {
+  background: var(--b-dark);
+  padding: 0 28px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.b-logo {
+  color: var(--b-accent);
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.b-logo span {
+  color: var(--b-bg);
+}
+
+.b-nav-right {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.b-nav-icon {
+  color: rgba(253, 251, 212, 0.6);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.b-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--b-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--b-bg);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Layout */
+.b-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar */
+.b-sidebar {
+  width: 240px;
+  background: var(--b-sidebar-bg);
+  border-right: 1px solid var(--b-border);
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  flex-shrink: 0;
+}
+
+.channel-card {
+  margin: 0 16px 16px;
+  background: var(--b-dark);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ch-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--b-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ch-avatar svg {
+  color: var(--b-bg);
+}
+
+.ch-name {
+  color: var(--b-bg);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.ch-sub {
+  color: rgba(253, 251, 212, 0.6);
+  font-size: 11px;
+}
+
+.side-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: rgba(113, 54, 0, 0.4);
+  padding: 0 24px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.side-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 24px;
+  font-size: 14px;
+  color: #713600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.side-nav-item i {
+  font-size: 18px;
+  width: 20px;
+}
+
+.side-nav-item:hover {
+  background: rgba(192, 88, 0, 0.05);
+  color: var(--b-accent);
+}
+
+.badge-dot {
+  background: var(--b-accent);
+  color: var(--b-bg);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-left: auto;
+}
+
+.side-nav-item.active {
+  background: rgba(192, 88, 0, 0.1);
+  color: var(--b-accent);
+  font-weight: 600;
+  border-right: 3px solid var(--b-accent);
+}
+
+/* Main Content Wrapper */
+.b-main {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+/* Player Bar */
+.b-player-bar {
+  background: var(--b-dark);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.pb-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pb-title {
+  color: var(--b-bg);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pb-host {
+  color: rgba(253, 251, 212, 0.6);
+  font-size: 12px;
+}
+
+.pb-progress {
+  flex: 2;
+  max-width: 600px;
+}
+
+.pb-bar {
+  height: 4px;
+  background: rgba(253, 251, 212, 0.1);
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+
+.pb-fill {
+  height: 4px;
+  background: var(--b-accent);
+  border-radius: 2px;
+  width: 35%;
+}
+
+.pb-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(253, 251, 212, 0.4);
+}
+
+.pb-controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.pb-ctrl {
+  color: rgba(253, 251, 212, 0.6);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.pb-play {
+  width: 40px;
+  height: 40px;
+  background: var(--b-accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--b-bg);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .b-sidebar {
+    display: none;
+  }
+}

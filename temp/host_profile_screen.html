@@ -1,0 +1,179 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+  .screen{background:#FDFBD4;border:1px solid #38240D22;border-radius:12px;overflow:hidden}
+  .nav{background:#38240D;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+  .logo{color:#C05800;font-size:18px;font-weight:700}
+  .logo span{color:#FDFBD4}
+  .nav-right{display:flex;gap:16px;align-items:center}
+  .nav-icon{color:#FDFBD4aa;font-size:18px}
+  .avatar{width:30px;height:30px;border-radius:50%;background:#C05800;display:flex;align-items:center;justify-content:center;color:#FDFBD4;font-size:12px;font-weight:600}
+  .layout{display:flex;min-height:760px}
+  .sidebar{width:200px;background:#38240D0D;border-right:1px solid #71360022;padding:20px 0;flex-shrink:0}
+  .ch-card{margin:0 14px 20px;background:#38240D;border-radius:10px;padding:14px}
+  .ch-av{width:36px;height:36px;border-radius:8px;background:#C05800;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+  .ch-av i{font-size:18px;color:#FDFBD4}
+  .ch-name{color:#FDFBD4;font-size:13px;font-weight:600}
+  .ch-sub{color:#FDFBD4aa;font-size:11px}
+  .side-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#71360066;padding:0 20px;margin-bottom:10px;text-transform:uppercase}
+  .side-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:#713600;cursor:pointer}
+  .side-item.active{background:#C0580018;color:#C05800;font-weight:600;border-right:3px solid #C05800}
+  .side-item i{font-size:16px}
+  .main{flex:1;padding:0;overflow:hidden}
+  .profile-banner{background:#38240D;height:110px;position:relative}
+  .profile-banner-inner{position:relative;height:100%}
+  .profile-avatar-wrap{position:absolute;left:32px;bottom:-36px;display:flex;align-items:flex-end;gap:16px}
+  .profile-avatar{width:80px;height:80px;border-radius:50%;background:#C05800;border:4px solid #FDFBD4;display:flex;align-items:center;justify-content:center;font-size:26px;color:#FDFBD4;font-weight:700;flex-shrink:0}
+  .profile-actions{position:absolute;right:32px;bottom:12px;display:flex;gap:10px}
+  .btn-edit{background:#FDFBD4;color:#38240D;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .btn-settings{background:transparent;border:1.5px solid #FDFBD433;color:#FDFBD4;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .profile-info{padding:48px 32px 24px}
+  .profile-name{font-size:22px;font-weight:700;color:#38240D;margin-bottom:2px}
+  .profile-handle{font-size:13px;color:#71360099;margin-bottom:8px}
+  .profile-bio{font-size:13px;color:#713600;line-height:1.6;max-width:520px;margin-bottom:16px}
+  .profile-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .profile-tag{background:#38240D15;color:#38240D;border:1px solid #38240D22;border-radius:20px;font-size:11px;font-weight:600;padding:4px 12px}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0 32px 24px}
+  .stat-card{background:#fff;border:1px solid #71360018;border-radius:10px;padding:16px}
+  .stat-label{font-size:11px;color:#71360077;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+  .stat-label i{font-size:13px;color:#C05800}
+  .stat-num{font-size:22px;font-weight:700;color:#38240D}
+  .stat-sub{font-size:11px;color:#71360066;margin-top:2px}
+  .tabs{display:flex;gap:0;border-bottom:1px solid #71360022;padding:0 32px;margin-bottom:0}
+  .tab{padding:10px 20px;font-size:13px;color:#71360099;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.active{color:#C05800;font-weight:600;border-bottom-color:#C05800}
+  .episodes-section{padding:20px 32px 24px}
+  .ep-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .ep-card{background:#fff;border:1px solid #71360018;border-radius:10px;overflow:hidden}
+  .ep-art{height:80px;display:flex;align-items:center;justify-content:center}
+  .ep-art.a1{background:#713600}
+  .ep-art.a2{background:#38240D}
+  .ep-art.a3{background:#C05800cc}
+  .ep-art i{font-size:24px;color:#C05800}
+  .ep-art.a3 i{color:#FDFBD4}
+  .ep-body{padding:12px}
+  .ep-cat{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#C05800;font-weight:700;margin-bottom:4px}
+  .ep-title{font-size:12px;font-weight:600;color:#38240D;margin-bottom:3px;line-height:1.4}
+  .ep-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+  .ep-plays{font-size:10px;color:#71360077;display:flex;align-items:center;gap:3px}
+  .badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+  .badge.approved{background:#1a7a3c22;color:#1a7a3c}
+  .badge.pending{background:#C0580022;color:#C05800}
+  .analytics-section{padding:20px 32px 24px;display:none}
+  .label-bar{font-size:11px;color:#71360055;text-align:center;padding:6px;font-style:italic;background:#FDFBD4}
+</style>
+
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-right">
+      <i class="ti ti-bell nav-icon" aria-hidden="true"></i>
+      <div class="avatar">AS</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="ch-card">
+        <div class="ch-av"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+        <div class="ch-name">The Startup Grind</div>
+        <div class="ch-sub">43 episodes · Host</div>
+      </div>
+      <div class="side-label">Studio</div>
+      <div class="side-item"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+      <div class="side-item"><i class="ti ti-file-music" aria-hidden="true"></i> My Episodes</div>
+      <div class="side-item"><i class="ti ti-cloud-upload" aria-hidden="true"></i> Upload</div>
+      <div class="side-item"><i class="ti ti-chart-bar" aria-hidden="true"></i> Analytics</div>
+      <div class="side-item active"><i class="ti ti-user-circle" aria-hidden="true"></i> Profile</div>
+    </div>
+
+    <div class="main">
+      <div class="profile-banner">
+        <div class="profile-banner-inner">
+          <div class="profile-actions">
+            <button class="btn-settings"><i class="ti ti-settings" style="font-size:14px" aria-hidden="true"></i> Settings</button>
+            <button class="btn-edit"><i class="ti ti-edit" style="font-size:14px" aria-hidden="true"></i> Edit profile</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding:0 32px;position:relative">
+        <div style="position:absolute;top:-36px;left:32px">
+          <div class="profile-avatar">AS</div>
+        </div>
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-name">Arjun Sharma</div>
+        <div class="profile-handle">@arjun · Host since Jan 2026</div>
+        <div class="profile-bio">Founder, investor, and storyteller. I run The Startup Grind — a weekly podcast about the realities of building companies in India and beyond. No fluff, just honest conversations.</div>
+        <div class="profile-tags">
+          <div class="profile-tag"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> Bangalore, India</div>
+          <div class="profile-tag"><i class="ti ti-bulb" style="font-size:11px" aria-hidden="true"></i> Business</div>
+          <div class="profile-tag"><i class="ti ti-link" style="font-size:11px" aria-hidden="true"></i> startupgrind.in</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-file-music" aria-hidden="true"></i> Episodes</div>
+          <div class="stat-num">43</div>
+          <div class="stat-sub">40 live · 2 pending · 1 rejected</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-player-play" aria-hidden="true"></i> Total plays</div>
+          <div class="stat-num">62.4k</div>
+          <div class="stat-sub">↑ 18% this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-users" aria-hidden="true"></i> Followers</div>
+          <div class="stat-num">1,240</div>
+          <div class="stat-sub">↑ 84 this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-clock" aria-hidden="true"></i> Avg duration</div>
+          <div class="stat-num">48 min</div>
+          <div class="stat-sub">Per episode</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active">Episodes</div>
+        <div class="tab">About channel</div>
+        <div class="tab">Analytics</div>
+      </div>
+
+      <div class="episodes-section">
+        <div class="ep-grid">
+          <div class="ep-card">
+            <div class="ep-art a2"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+            <div class="ep-body">
+              <div class="ep-cat">Business</div>
+              <div class="ep-title">The Startup Grind #43 — Fundraising 101</div>
+              <div class="ep-footer"><div class="ep-plays"><i class="ti ti-player-play" style="font-size:10px"></i> 3.1k</div><span class="badge approved">Approved</span></div>
+            </div>
+          </div>
+          <div class="ep-card">
+            <div class="ep-art a1"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+            <div class="ep-body">
+              <div class="ep-cat">Business</div>
+              <div class="ep-title">The Startup Grind #44 — Product-Market Fit</div>
+              <div class="ep-footer"><div class="ep-plays"><i class="ti ti-player-play" style="font-size:10px"></i> 0</div><span class="badge pending">Pending</span></div>
+            </div>
+          </div>
+          <div class="ep-card">
+            <div class="ep-art a3"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+            <div class="ep-body">
+              <div class="ep-cat">Business</div>
+              <div class="ep-title">Building the MVP — Ep. 40</div>
+              <div class="ep-footer"><div class="ep-plays"><i class="ti ti-player-play" style="font-size:10px"></i> 7.2k</div><span class="badge approved">Approved</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="label-bar">Host profile screen</div>
+</div>

@@ -1,0 +1,196 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+  .screen{background:#FDFBD4;border:1px solid #38240D22;border-radius:12px;overflow:hidden}
+  .nav{background:#38240D;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+  .logo{color:#C05800;font-size:18px;font-weight:700}
+  .logo span{color:#FDFBD4}
+  .avatar{width:30px;height:30px;border-radius:50%;background:#C05800;display:flex;align-items:center;justify-content:center;color:#FDFBD4;font-size:12px;font-weight:600}
+  .layout{display:flex;min-height:720px}
+  .sidebar{width:200px;background:#38240D0D;border-right:1px solid #71360022;padding:20px 0;flex-shrink:0}
+  .ch-card{margin:0 14px 20px;background:#38240D;border-radius:10px;padding:14px}
+  .ch-av{width:36px;height:36px;border-radius:8px;background:#C05800;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+  .ch-av i{font-size:18px;color:#FDFBD4}
+  .ch-name{color:#FDFBD4;font-size:13px;font-weight:600}
+  .ch-sub{color:#FDFBD4aa;font-size:11px}
+  .side-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#71360066;padding:0 20px;margin-bottom:10px;text-transform:uppercase}
+  .side-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:#713600;cursor:pointer}
+  .side-item.active{background:#C0580018;color:#C05800;font-weight:600;border-right:3px solid #C05800}
+  .side-item i{font-size:16px}
+  .main{flex:1;padding:28px 32px;overflow:hidden}
+  .page-title{font-size:20px;font-weight:700;color:#38240D;margin-bottom:4px}
+  .page-sub{font-size:13px;color:#71360099;margin-bottom:24px}
+  .form-grid{display:grid;grid-template-columns:1fr 310px;gap:24px}
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:12px;font-weight:600;color:#713600;margin-bottom:6px}
+  .req{color:#C05800}
+  .field input,.field select,.field textarea{width:100%;background:#fff;border:1.5px solid #71360033;border-radius:8px;padding:10px 14px;font-size:13px;color:#38240D;outline:none;font-family:inherit}
+  .field input{height:42px}
+  .field select{height:42px}
+  .field textarea{resize:none;height:90px;line-height:1.6}
+  .cat-pill{display:inline-block;background:#C0580015;color:#C05800;border:1px solid #C0580033;border-radius:20px;font-size:11px;font-weight:600;padding:4px 12px;margin-top:6px}
+  .upload-zone{border:2px dashed #C0580055;border-radius:10px;background:#C0580008;min-height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:20px;transition:border-color .2s}
+  .upload-zone i{font-size:28px;color:#C05800}
+  .upload-zone-title{font-size:13px;font-weight:600;color:#38240D}
+  .upload-zone-sub{font-size:11px;color:#71360077;text-align:center}
+  .audio-file-card{background:#38240D;border-radius:10px;padding:16px;margin-bottom:16px}
+  .afc-label{color:#FDFBD4aa;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;font-weight:600}
+  .afc-file{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .afc-icon{width:38px;height:38px;background:#C05800;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .afc-icon i{font-size:18px;color:#FDFBD4}
+  .afc-name{color:#FDFBD4;font-size:13px;font-weight:600}
+  .afc-size{color:#FDFBD4aa;font-size:11px;margin-top:2px}
+  .progress-track{height:4px;background:#FDFBD422;border-radius:2px;margin-bottom:6px;overflow:hidden}
+  .progress-fill{height:4px;background:#C05800;border-radius:2px;width:100%}
+  .afc-done{display:flex;align-items:center;gap:6px;font-size:11px;color:#FDFBD4aa}
+  .afc-done i{color:#C05800;font-size:14px}
+  .afc-meta{display:flex;gap:14px;margin-top:8px;padding-top:8px;border-top:1px solid #FDFBD415}
+  .afc-meta-item{font-size:11px;color:#FDFBD4aa;display:flex;align-items:center;gap:4px}
+  .afc-meta-item i{font-size:13px;color:#C05800}
+  .cover-zone{border:2px dashed #71360033;border-radius:10px;background:transparent;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;padding:16px}
+  .cover-zone i{font-size:24px;color:#71360066}
+  .cover-zone-title{font-size:12px;font-weight:600;color:#713600}
+  .cover-zone-sub{font-size:11px;color:#71360077;text-align:center}
+  .info-card{background:#38240D0D;border:1px solid #71360022;border-radius:10px;padding:14px}
+  .info-title{font-size:13px;font-weight:600;color:#38240D;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .info-title i{color:#C05800;font-size:14px}
+  .info-item{font-size:12px;color:#71360099;margin-bottom:5px;display:flex;align-items:flex-start;gap:6px;line-height:1.5}
+  .info-dot{color:#C05800;font-weight:700;flex-shrink:0;margin-top:1px}
+  .flow-mini{display:flex;align-items:center;gap:6px;margin-bottom:14px;padding:10px 12px;background:#38240D;border-radius:8px}
+  .flow-step{font-size:10px;color:#FDFBD4aa;text-align:center;flex:1}
+  .flow-step span{display:block;color:#C05800;font-weight:700;font-size:11px;margin-bottom:2px}
+  .flow-arr{color:#FDFBD455;font-size:12px;flex-shrink:0}
+  .form-actions{display:flex;gap:10px;margin-top:4px}
+  .btn-primary{background:#C05800;color:#FDFBD4;border:none;border-radius:8px;padding:11px 24px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .btn-primary i{font-size:14px}
+  .btn-ghost{background:transparent;color:#713600;border:1.5px solid #71360033;border-radius:8px;padding:11px 24px;font-size:13px;cursor:pointer}
+  .label-bar{font-size:11px;color:#71360055;text-align:center;padding:6px;font-style:italic;background:#FDFBD4}
+  .two-field{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+</style>
+
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="avatar">AS</div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="ch-card">
+        <div class="ch-av"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+        <div class="ch-name">The Startup Grind</div>
+        <div class="ch-sub">43 episodes · Host</div>
+      </div>
+      <div class="side-label">Studio</div>
+      <div class="side-item"><i class="ti ti-layout-dashboard" aria-hidden="true"></i> Dashboard</div>
+      <div class="side-item"><i class="ti ti-file-music" aria-hidden="true"></i> My Episodes</div>
+      <div class="side-item active"><i class="ti ti-cloud-upload" aria-hidden="true"></i> Upload</div>
+      <div class="side-item"><i class="ti ti-chart-bar" aria-hidden="true"></i> Analytics</div>
+      <div class="side-item"><i class="ti ti-settings" aria-hidden="true"></i> Channel</div>
+    </div>
+
+    <div class="main">
+      <div class="page-title">Upload episode</div>
+      <div class="page-sub">Your file uploads directly to our CDN — no external links needed</div>
+
+      <div class="form-grid">
+
+        <div>
+          <div class="field">
+            <label>Episode title <span class="req">*</span></label>
+            <input type="text" value="The Startup Grind #44 — Finding Product-Market Fit" />
+          </div>
+
+          <div class="field">
+            <label>Description <span class="req">*</span></label>
+            <textarea>In this episode, we sit down with three founders who've cracked the code on product-market fit. What does it really feel like when you've found it?</textarea>
+          </div>
+
+          <div class="two-field">
+            <div class="field">
+              <label>Category <span class="req">*</span></label>
+              <select>
+                <option>Business &amp; entrepreneurship</option>
+                <option>Music shows &amp; DJ mixes</option>
+                <option>True crime &amp; mystery</option>
+                <option>Comedy &amp; entertainment</option>
+                <option>News &amp; current affairs</option>
+                <option>Health &amp; wellness</option>
+              </select>
+              <div class="cat-pill">Business &amp; entrepreneurship</div>
+            </div>
+            <div class="field">
+              <label>Episode duration</label>
+              <input type="text" value="51 min (auto-detected)" style="color:#71360077" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Audio file <span class="req">*</span></label>
+            <div class="upload-zone">
+              <i class="ti ti-music-up" aria-hidden="true"></i>
+              <div class="upload-zone-title">Drag &amp; drop your audio file here</div>
+              <div class="upload-zone-sub">MP3 or WAV · Max 200 MB · Uploads directly to CDN</div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button class="btn-primary"><i class="ti ti-send" aria-hidden="true"></i> Submit for review</button>
+            <button class="btn-ghost">Save draft</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="flow-mini">
+            <div class="flow-step"><span>①</span>Pick file</div>
+            <div class="flow-arr"><i class="ti ti-arrow-right" style="font-size:11px" aria-hidden="true"></i></div>
+            <div class="flow-step"><span>②</span>CDN upload</div>
+            <div class="flow-arr"><i class="ti ti-arrow-right" style="font-size:11px" aria-hidden="true"></i></div>
+            <div class="flow-step"><span>③</span>URL saved</div>
+            <div class="flow-arr"><i class="ti ti-arrow-right" style="font-size:11px" aria-hidden="true"></i></div>
+            <div class="flow-step"><span>④</span>Pending</div>
+          </div>
+
+          <div class="audio-file-card">
+            <div class="afc-label">Audio file</div>
+            <div class="afc-file">
+              <div class="afc-icon"><i class="ti ti-file-music" aria-hidden="true"></i></div>
+              <div>
+                <div class="afc-name">episode44-final.mp3</div>
+                <div class="afc-size">48.2 MB</div>
+              </div>
+            </div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
+            <div class="afc-done"><i class="ti ti-circle-check" aria-hidden="true"></i> Uploaded to CDN — URL saved automatically</div>
+            <div class="afc-meta">
+              <div class="afc-meta-item"><i class="ti ti-clock" aria-hidden="true"></i> 51 min</div>
+              <div class="afc-meta-item"><i class="ti ti-file" aria-hidden="true"></i> MP3 · 128kbps</div>
+              <div class="afc-meta-item"><i class="ti ti-cloud-check" aria-hidden="true"></i> Cloudinary</div>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:16px">
+            <label>Cover art</label>
+            <div class="cover-zone">
+              <i class="ti ti-photo-up" aria-hidden="true"></i>
+              <div class="cover-zone-title">Upload cover image</div>
+              <div class="cover-zone-sub">PNG or JPG · Square · Max 2 MB</div>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <div class="info-title"><i class="ti ti-info-circle" aria-hidden="true"></i> How uploading works</div>
+            <div class="info-item"><span class="info-dot">·</span> Your MP3 goes directly from your device to our CDN — no pasting links</div>
+            <div class="info-item"><span class="info-dot">·</span> We store a permanent CDN URL in our database on your behalf</div>
+            <div class="info-item"><span class="info-dot">·</span> Episode is set to Pending — admin reviews before it goes live</div>
+            <div class="info-item"><span class="info-dot">·</span> Rejected episodes can be edited and resubmitted</div>
+            <div class="info-item"><span class="info-dot">·</span> Approval typically takes 24–48 hours</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="label-bar">Screen 7 / 10 — Host: Upload episode (with direct file upload to CDN)</div>
+</div>

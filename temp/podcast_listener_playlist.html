@@ -1,0 +1,137 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  .screen { background: #FDFBD4; border: 1px solid #38240D22; border-radius: 12px; overflow: hidden; }
+  .nav { background: #38240D; padding: 0 28px; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { color: #C05800; font-size: 18px; font-weight: 700; }
+  .logo span { color: #FDFBD4; }
+  .nav-right { display: flex; gap: 16px; align-items: center; }
+  .nav-icon { color: #FDFBD4aa; font-size: 18px; }
+  .avatar { width: 30px; height: 30px; border-radius: 50%; background: #C05800; display: flex; align-items: center; justify-content: center; color: #FDFBD4; font-size: 12px; font-weight: 600; }
+  .layout { display: flex; min-height: 580px; }
+  .sidebar { width: 200px; background: #38240D0D; border-right: 1px solid #71360022; padding: 20px 0; flex-shrink: 0; }
+  .side-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #71360066; padding: 0 20px; margin-bottom: 10px; text-transform: uppercase; }
+  .side-section { margin-bottom: 24px; }
+  .side-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: #713600; cursor: pointer; }
+  .side-item.active { background: #C0580018; color: #C05800; font-weight: 600; border-right: 3px solid #C05800; }
+  .side-item i { font-size: 16px; }
+  .main { flex: 1; padding: 24px; }
+  .page-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+  .page-title { font-size: 20px; font-weight: 700; color: #38240D; }
+  .page-sub { font-size: 13px; color: #71360099; margin-top: 2px; }
+  .sort-btn { display: flex; align-items: center; gap: 6px; background: #fff; border: 1px solid #71360022; border-radius: 8px; padding: 7px 14px; font-size: 12px; color: #713600; cursor: pointer; }
+  .playlist-list { display: flex; flex-direction: column; gap: 10px; }
+  .pl-item { background: #fff; border: 1px solid #71360018; border-radius: 10px; display: flex; align-items: center; gap: 14px; padding: 12px 16px; }
+  .pl-num { font-size: 12px; color: #71360044; width: 20px; text-align: center; flex-shrink: 0; }
+  .pl-art { width: 48px; height: 48px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .pl-art.c1 { background: #713600; }
+  .pl-art.c2 { background: #38240D; }
+  .pl-art.c3 { background: #C05800; }
+  .pl-art.c4 { background: #71360055; }
+  .pl-art i { font-size: 20px; color: #C05800; }
+  .pl-art.c3 i { color: #FDFBD4; }
+  .pl-info { flex: 1; }
+  .pl-title { font-size: 13px; font-weight: 600; color: #38240D; margin-bottom: 3px; }
+  .pl-host { font-size: 11px; color: #71360099; }
+  .pl-cat { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; color: #C05800; margin-top: 4px; }
+  .pl-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+  .pl-dur { font-size: 11px; color: #71360077; }
+  .pl-plays { font-size: 10px; color: #71360055; }
+  .pl-btns { display: flex; gap: 6px; }
+  .pl-remove { background: transparent; border: 1px solid #71360022; border-radius: 6px; padding: 5px 9px; font-size: 11px; color: #71360077; cursor: pointer; }
+  .pl-play { background: #C05800; border: none; border-radius: 6px; padding: 5px 12px; font-size: 11px; color: #FDFBD4; font-weight: 600; cursor: pointer; }
+  .player-bar { background: #38240D; height: 60px; display: flex; align-items: center; padding: 0 24px; gap: 16px; }
+  .pb-info { flex: 1; }
+  .pb-title { color: #FDFBD4; font-size: 13px; font-weight: 600; }
+  .pb-host { color: #FDFBD4aa; font-size: 11px; }
+  .pb-progress { flex: 2; }
+  .pb-bar { height: 3px; background: #FDFBD422; border-radius: 2px; margin-bottom: 4px; }
+  .pb-fill { height: 3px; background: #C05800; border-radius: 2px; width: 60%; }
+  .pb-times { display: flex; justify-content: space-between; font-size: 10px; color: #FDFBD455; }
+  .pb-controls { display: flex; gap: 14px; align-items: center; }
+  .pb-ctrl { color: #FDFBD4aa; font-size: 16px; }
+  .pb-play { width: 34px; height: 34px; background: #C05800; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FDFBD4; font-size: 15px; }
+  .label { font-size: 11px; color: #71360055; text-align: center; padding: 4px; font-style: italic; background: #FDFBD4; }
+  .currently-badge { background: #C0580022; border: 1px solid #C0580044; border-radius: 20px; padding: 3px 10px; font-size: 10px; color: #C05800; font-weight: 600; }
+</style>
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-right"><i class="ti ti-bell nav-icon" aria-hidden="true"></i><div class="avatar">NK</div></div>
+  </div>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-label">Menu</div>
+        <div class="side-item"><i class="ti ti-layout-grid" aria-hidden="true"></i> Browse</div>
+        <div class="side-item active"><i class="ti ti-bookmark" aria-hidden="true"></i> My Playlist</div>
+        <div class="side-item"><i class="ti ti-history" aria-hidden="true"></i> History</div>
+        <div class="side-item"><i class="ti ti-trending-up" aria-hidden="true"></i> Trending</div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Categories</div>
+        <div class="side-item"><i class="ti ti-music" aria-hidden="true"></i> Music</div>
+        <div class="side-item"><i class="ti ti-news" aria-hidden="true"></i> News</div>
+        <div class="side-item"><i class="ti ti-heart" aria-hidden="true"></i> Wellness</div>
+        <div class="side-item"><i class="ti ti-bulb" aria-hidden="true"></i> Business</div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="page-head">
+        <div><div class="page-title">My Playlist</div><div class="page-sub">7 saved episodes · 4h 12min total</div></div>
+        <button class="sort-btn"><i class="ti ti-arrows-sort" style="font-size:14px" aria-hidden="true"></i> Sort</button>
+      </div>
+      <div class="playlist-list">
+        <div class="pl-item" style="border-color: #C0580033; border-left: 3px solid #C05800;">
+          <div class="pl-num"><i class="ti ti-player-play" style="font-size:14px; color:#C05800" aria-hidden="true"></i></div>
+          <div class="pl-art c1"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+          <div class="pl-info">
+            <div class="pl-title">The Vanishing of Room 12</div>
+            <div class="pl-host">Priya Menon</div>
+            <div class="pl-cat">True Crime</div>
+          </div>
+          <div class="pl-meta">
+            <div class="currently-badge">Now playing</div>
+            <div class="pl-dur">38 min</div>
+            <div class="pl-btns"><button class="pl-remove"><i class="ti ti-trash" style="font-size:10px"></i></button><button class="pl-play">Pause</button></div>
+          </div>
+        </div>
+        <div class="pl-item">
+          <div class="pl-num" style="color:#71360066">2</div>
+          <div class="pl-art c2"><i class="ti ti-brain" aria-hidden="true"></i></div>
+          <div class="pl-info"><div class="pl-title">Morning Rituals That Work</div><div class="pl-host">Ravi Krishnan</div><div class="pl-cat">Self-improvement</div></div>
+          <div class="pl-meta"><div class="pl-dur">42 min</div><div class="pl-plays">6.7k plays</div><div class="pl-btns"><button class="pl-remove"><i class="ti ti-trash" style="font-size:10px"></i></button><button class="pl-play">Play</button></div></div>
+        </div>
+        <div class="pl-item">
+          <div class="pl-num" style="color:#71360066">3</div>
+          <div class="pl-art c3"><i class="ti ti-music" aria-hidden="true"></i></div>
+          <div class="pl-info"><div class="pl-title">Late Night Frequencies Vol. 4</div><div class="pl-host">DJ Kapoor</div><div class="pl-cat">Music</div></div>
+          <div class="pl-meta"><div class="pl-dur">60 min</div><div class="pl-plays">5.4k plays</div><div class="pl-btns"><button class="pl-remove"><i class="ti ti-trash" style="font-size:10px"></i></button><button class="pl-play">Play</button></div></div>
+        </div>
+        <div class="pl-item">
+          <div class="pl-num" style="color:#71360066">4</div>
+          <div class="pl-art c4"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div>
+          <div class="pl-info"><div class="pl-title">The Startup Grind #42</div><div class="pl-host">Arjun Sharma</div><div class="pl-cat">Business</div></div>
+          <div class="pl-meta"><div class="pl-dur">51 min</div><div class="pl-plays">3.1k plays</div><div class="pl-btns"><button class="pl-remove"><i class="ti ti-trash" style="font-size:10px"></i></button><button class="pl-play">Play</button></div></div>
+        </div>
+        <div class="pl-item">
+          <div class="pl-num" style="color:#71360066">5</div>
+          <div class="pl-art c2"><i class="ti ti-mood-happy" aria-hidden="true"></i></div>
+          <div class="pl-info"><div class="pl-title">Totally Unscripted Ep. 9</div><div class="pl-host">Meera & Zaid</div><div class="pl-cat">Comedy</div></div>
+          <div class="pl-meta"><div class="pl-dur">44 min</div><div class="pl-plays">5.1k plays</div><div class="pl-btns"><button class="pl-remove"><i class="ti ti-trash" style="font-size:10px"></i></button><button class="pl-play">Play</button></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="player-bar">
+    <div class="pb-info"><div class="pb-title">The Vanishing of Room 12</div><div class="pb-host">Priya Menon</div></div>
+    <div class="pb-progress"><div class="pb-bar"><div class="pb-fill"></div></div><div class="pb-times"><span>22:50</span><span>38:00</span></div></div>
+    <div class="pb-controls">
+      <div class="pb-ctrl"><i class="ti ti-player-skip-back" aria-hidden="true"></i></div>
+      <div class="pb-play"><i class="ti ti-player-pause" aria-hidden="true"></i></div>
+      <div class="pb-ctrl"><i class="ti ti-player-skip-forward" aria-hidden="true"></i></div>
+      <div class="pb-ctrl"><i class="ti ti-volume" aria-hidden="true"></i></div>
+    </div>
+  </div>
+  <div class="label">Screen 5 / 10 — Listener: My Playlist</div>
+</div>

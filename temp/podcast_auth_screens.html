@@ -1,0 +1,94 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .screen { background: #FDFBD4; border: 1px solid #38240D22; border-radius: 12px; overflow: hidden; }
+  .auth-wrap { display: flex; min-height: 600px; }
+  .auth-left { flex: 0 0 52%; background: #38240D; padding: 48px 40px; display: flex; flex-direction: column; justify-content: space-between; }
+  .auth-logo { color: #C05800; font-size: 22px; font-weight: 700; }
+  .auth-logo span { color: #FDFBD4; }
+  .auth-tagline { }
+  .auth-tagline h2 { font-size: 28px; font-weight: 700; color: #FDFBD4; line-height: 1.3; margin-bottom: 12px; }
+  .auth-tagline p { color: #FDFBD4aa; font-size: 13px; line-height: 1.7; }
+  .auth-quote { background: #71360044; border-radius: 10px; padding: 18px; border-left: 3px solid #C05800; }
+  .auth-quote p { color: #FDFBD4cc; font-size: 13px; line-height: 1.6; font-style: italic; }
+  .auth-quote-name { color: #C05800; font-size: 12px; margin-top: 8px; font-weight: 600; }
+  .auth-right { flex: 1; padding: 48px 36px; background: #FDFBD4; display: flex; flex-direction: column; justify-content: center; }
+  .auth-form-title { font-size: 22px; font-weight: 700; color: #38240D; margin-bottom: 4px; }
+  .auth-form-sub { font-size: 13px; color: #71360099; margin-bottom: 28px; }
+  .field { margin-bottom: 16px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: #713600; margin-bottom: 6px; }
+  .field input, .field select { width: 100%; height: 40px; background: #fff; border: 1.5px solid #71360033; border-radius: 8px; padding: 0 14px; font-size: 13px; color: #38240D; outline: none; }
+  .field input:focus { border-color: #C05800; }
+  .forgot { text-align: right; font-size: 12px; color: #C05800; margin-top: -8px; margin-bottom: 16px; }
+  .btn-full { width: 100%; background: #C05800; color: #FDFBD4; border: none; border-radius: 8px; height: 42px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 16px; }
+  .divider { text-align: center; font-size: 12px; color: #71360066; margin: 12px 0; position: relative; }
+  .divider::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 1px; background: #71360022; }
+  .divider span { background: #FDFBD4; padding: 0 12px; position: relative; }
+  .role-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .role-opt { flex: 1; border: 1.5px solid #71360033; border-radius: 8px; padding: 10px 8px; text-align: center; cursor: pointer; }
+  .role-opt.active { border-color: #C05800; background: #C0580011; }
+  .role-opt i { font-size: 18px; color: #C05800; display: block; margin-bottom: 4px; }
+  .role-opt span { font-size: 11px; color: #38240D; font-weight: 500; }
+  .switch-link { text-align: center; font-size: 12px; color: #71360099; }
+  .switch-link a { color: #C05800; font-weight: 600; text-decoration: none; }
+  .label { font-size: 11px; color: #71360055; text-align: center; padding: 6px 0; font-style: italic; background: #FDFBD4; }
+</style>
+
+<div class="two-col">
+  <div class="screen">
+    <div class="auth-wrap">
+      <div class="auth-left">
+        <div class="auth-logo">pod<span>cast</span></div>
+        <div class="auth-tagline">
+          <h2>Welcome back to the mic.</h2>
+          <p>Your favourite episodes are waiting. Pick up right where you left off.</p>
+        </div>
+        <div class="auth-quote">
+          <p>"This platform completely changed how I discover audio content. Absolutely love it."</p>
+          <div class="auth-quote-name">— Ananya, Listener</div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="auth-form-title">Sign in</div>
+        <div class="auth-form-sub">Good to see you again</div>
+        <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
+        <div class="field"><label>Password</label><input type="password" placeholder="••••••••" /></div>
+        <div class="forgot">Forgot password?</div>
+        <button class="btn-full">Sign in</button>
+        <div class="switch-link">No account? <a href="#">Create one →</a></div>
+      </div>
+    </div>
+    <div class="label">Screen 2 / 10 — Login</div>
+  </div>
+
+  <div class="screen">
+    <div class="auth-wrap">
+      <div class="auth-left">
+        <div class="auth-logo">pod<span>cast</span></div>
+        <div class="auth-tagline">
+          <h2>Join the community.</h2>
+          <p>Create an account as a listener or start your own show as a host.</p>
+        </div>
+        <div class="auth-quote">
+          <p>"I had my first episode live within 20 minutes of signing up. The process is incredibly smooth."</p>
+          <div class="auth-quote-name">— Vikram, Host</div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="auth-form-title">Create account</div>
+        <div class="auth-form-sub">Choose your role to get started</div>
+        <div class="role-row">
+          <div class="role-opt active"><i class="ti ti-headphones" aria-hidden="true"></i><span>Listener</span></div>
+          <div class="role-opt"><i class="ti ti-microphone-2" aria-hidden="true"></i><span>Host</span></div>
+        </div>
+        <div class="field"><label>Full name</label><input type="text" placeholder="Your name" /></div>
+        <div class="field"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
+        <div class="field"><label>Password</label><input type="password" placeholder="Create a password" /></div>
+        <button class="btn-full">Create account</button>
+        <div class="switch-link">Already have one? <a href="#">Sign in →</a></div>
+      </div>
+    </div>
+    <div class="label">Screen 3 / 10 — Register</div>
+  </div>
+</div>

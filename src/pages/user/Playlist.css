@@ -1,0 +1,245 @@
+.playlist-page {
+  padding: 24px;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--b-dark);
+}
+
+.page-sub {
+  font-size: 14px;
+  color: rgba(113, 54, 0, 0.6);
+  margin-top: 4px;
+}
+
+.sort-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid var(--b-border);
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: var(--b-dark);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.sort-btn:hover {
+  border-color: var(--b-accent);
+  color: var(--b-accent);
+}
+
+.sort-btn i {
+  display: flex;
+  align-items: center;
+}
+
+.playlist-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pl-item {
+  background: #fff;
+  border: 1px solid rgba(113, 54, 0, 0.1);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 20px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pl-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.pl-item.active {
+  border-color: rgba(192, 88, 0, 0.2);
+  border-left: 4px solid var(--b-accent);
+  background: rgba(192, 88, 0, 0.02);
+}
+
+.pl-num {
+  font-size: 13px;
+  color: rgba(113, 54, 0, 0.3);
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.playing-icon {
+  color: var(--b-accent);
+  display: flex;
+  justify-content: center;
+}
+
+.pl-art {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pl-art i {
+  display: flex;
+  align-items: center;
+}
+
+.pl-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pl-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--b-dark);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pl-host {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.6);
+}
+
+.pl-cat {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--b-accent);
+  margin-top: 6px;
+}
+
+.pl-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.currently-badge {
+  background: rgba(192, 88, 0, 0.1);
+  border: 1px solid rgba(192, 88, 0, 0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 10px;
+  color: var(--b-accent);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.pl-dur {
+  font-size: 12px;
+  color: rgba(113, 54, 0, 0.5);
+  font-weight: 500;
+}
+
+.pl-plays {
+  font-size: 11px;
+  color: rgba(113, 54, 0, 0.4);
+}
+
+.pl-btns {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.pl-remove {
+  background: transparent;
+  border: 1.5px solid rgba(113, 54, 0, 0.1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: rgba(113, 54, 0, 0.4);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.pl-remove:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.pl-play {
+  background: var(--b-accent);
+  border: none;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 12px;
+  color: var(--b-bg);
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.pl-play:hover {
+  opacity: 0.9;
+}
+
+/* States */
+.playlist-loading, .playlist-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  color: rgba(113, 54, 0, 0.5);
+  font-size: 15px;
+}
+
+.loader {
+  border: 3px solid rgba(113, 54, 0, 0.1);
+  border-top: 3px solid var(--b-accent);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .pl-item {
+    gap: 12px;
+    padding: 12px;
+  }
+  .pl-art {
+    width: 44px;
+    height: 44px;
+  }
+  .pl-btns .pl-play {
+    padding: 6px 10px;
+  }
+}

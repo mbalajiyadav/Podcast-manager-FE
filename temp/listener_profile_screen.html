@@ -1,0 +1,258 @@
+
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+  .screen{background:#FDFBD4;border:1px solid #38240D22;border-radius:12px;overflow:hidden}
+  .nav{background:#38240D;padding:0 28px;height:52px;display:flex;align-items:center;justify-content:space-between}
+  .logo{color:#C05800;font-size:18px;font-weight:700}
+  .logo span{color:#FDFBD4}
+  .nav-right{display:flex;gap:16px;align-items:center}
+  .nav-icon{color:#FDFBD4aa;font-size:18px}
+  .avatar-sm{width:30px;height:30px;border-radius:50%;background:#C05800;display:flex;align-items:center;justify-content:center;color:#FDFBD4;font-size:12px;font-weight:600}
+  .layout{display:flex;min-height:780px}
+  .sidebar{width:200px;background:#38240D0D;border-right:1px solid #71360022;padding:20px 0;flex-shrink:0}
+  .side-label{font-size:10px;font-weight:700;letter-spacing:1px;color:#71360066;padding:0 20px;margin-bottom:10px;text-transform:uppercase}
+  .side-section{margin-bottom:24px}
+  .side-item{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:13px;color:#713600;cursor:pointer}
+  .side-item.active{background:#C0580018;color:#C05800;font-weight:600;border-right:3px solid #C05800}
+  .side-item i{font-size:16px}
+  .main{flex:1;overflow:hidden}
+  .profile-banner{background:#38240D;height:110px;position:relative}
+  .profile-actions{position:absolute;right:32px;bottom:12px;display:flex;gap:10px}
+  .btn-edit{background:#FDFBD4;color:#38240D;border:none;border-radius:8px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .btn-settings{background:transparent;border:1.5px solid #FDFBD433;color:#FDFBD4;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px}
+  .profile-avatar{width:80px;height:80px;border-radius:50%;background:#713600;border:4px solid #FDFBD4;display:flex;align-items:center;justify-content:center;font-size:26px;color:#FDFBD4;font-weight:700}
+  .profile-info{padding:48px 32px 20px}
+  .profile-name{font-size:22px;font-weight:700;color:#38240D;margin-bottom:2px}
+  .profile-handle{font-size:13px;color:#71360099;margin-bottom:8px}
+  .profile-bio{font-size:13px;color:#713600;line-height:1.6;max-width:500px;margin-bottom:14px}
+  .profile-tags{display:flex;gap:8px;flex-wrap:wrap}
+  .profile-tag{background:#38240D15;color:#38240D;border:1px solid #38240D22;border-radius:20px;font-size:11px;font-weight:600;padding:4px 12px}
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px 32px 20px}
+  .stat-card{background:#fff;border:1px solid #71360018;border-radius:10px;padding:14px}
+  .stat-label{font-size:11px;color:#71360077;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+  .stat-label i{font-size:13px;color:#C05800}
+  .stat-num{font-size:22px;font-weight:700;color:#38240D}
+  .stat-sub{font-size:11px;color:#71360066;margin-top:2px}
+  .tabs{display:flex;gap:0;border-bottom:1px solid #71360022;padding:0 32px}
+  .tab{padding:10px 20px;font-size:13px;color:#71360099;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.active{color:#C05800;font-weight:600;border-bottom-color:#C05800}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px 32px 24px}
+  .section-title{font-size:14px;font-weight:600;color:#38240D;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+  .see-all{font-size:12px;color:#C05800;font-weight:500;cursor:pointer}
+  .playlist-list{display:flex;flex-direction:column;gap:8px}
+  .pl-item{background:#fff;border:1px solid #71360018;border-radius:8px;display:flex;align-items:center;gap:10px;padding:10px 12px}
+  .pl-art{width:38px;height:38px;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+  .pl-art.c1{background:#713600}
+  .pl-art.c2{background:#38240D}
+  .pl-art.c3{background:#C05800}
+  .pl-art i{font-size:16px;color:#C05800}
+  .pl-art.c3 i{color:#FDFBD4}
+  .pl-info{flex:1;min-width:0}
+  .pl-title{font-size:12px;font-weight:600;color:#38240D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pl-host{font-size:11px;color:#71360099}
+  .pl-dur{font-size:11px;color:#71360077;flex-shrink:0}
+  .history-list{display:flex;flex-direction:column;gap:8px}
+  .hist-item{background:#fff;border:1px solid #71360018;border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+  .hist-art{width:38px;height:38px;border-radius:6px;flex-shrink:0;background:#38240D;display:flex;align-items:center;justify-content:center}
+  .hist-art i{font-size:16px;color:#C05800}
+  .hist-info{flex:1;min-width:0}
+  .hist-title{font-size:12px;font-weight:600;color:#38240D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hist-meta{font-size:11px;color:#71360099}
+  .hist-progress{width:50px;flex-shrink:0}
+  .hist-bar{height:3px;background:#71360022;border-radius:2px}
+  .hist-fill{height:3px;background:#C05800;border-radius:2px}
+  .hist-pct{font-size:10px;color:#71360066;text-align:right;margin-top:3px}
+  .fav-cats{display:flex;flex-direction:column;gap:8px;padding:0 32px 16px}
+  .fav-section-title{font-size:14px;font-weight:600;color:#38240D;margin-bottom:12px}
+  .cat-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .cat-bar-item{}
+  .cat-bar-label{font-size:11px;font-weight:600;color:#38240D;margin-bottom:5px}
+  .cat-bar-track{height:6px;background:#71360015;border-radius:3px;overflow:hidden;margin-bottom:3px}
+  .cat-bar-fill{height:6px;background:#C05800;border-radius:3px}
+  .cat-bar-count{font-size:10px;color:#71360077}
+  .followed-hosts{padding:0 32px 24px}
+  .hosts-row{display:flex;gap:12px}
+  .host-chip{background:#fff;border:1px solid #71360018;border-radius:10px;padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+  .host-chip-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#FDFBD4}
+  .host-chip-name{font-size:12px;font-weight:600;color:#38240D;text-align:center}
+  .host-chip-ep{font-size:11px;color:#71360099}
+  .label-bar{font-size:11px;color:#71360055;text-align:center;padding:6px;font-style:italic;background:#FDFBD4}
+</style>
+
+<div class="screen">
+  <div class="nav">
+    <div class="logo">pod<span>cast</span></div>
+    <div class="nav-right">
+      <i class="ti ti-bell nav-icon" aria-hidden="true"></i>
+      <div class="avatar-sm">NK</div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="sidebar">
+      <div class="side-section">
+        <div class="side-label">Menu</div>
+        <div class="side-item"><i class="ti ti-layout-grid" aria-hidden="true"></i> Browse</div>
+        <div class="side-item"><i class="ti ti-bookmark" aria-hidden="true"></i> My Playlist</div>
+        <div class="side-item"><i class="ti ti-history" aria-hidden="true"></i> History</div>
+        <div class="side-item"><i class="ti ti-trending-up" aria-hidden="true"></i> Trending</div>
+        <div class="side-item active"><i class="ti ti-user-circle" aria-hidden="true"></i> Profile</div>
+      </div>
+      <div class="side-section">
+        <div class="side-label">Categories</div>
+        <div class="side-item"><i class="ti ti-music" aria-hidden="true"></i> Music</div>
+        <div class="side-item"><i class="ti ti-news" aria-hidden="true"></i> News</div>
+        <div class="side-item"><i class="ti ti-heart" aria-hidden="true"></i> Wellness</div>
+        <div class="side-item"><i class="ti ti-bulb" aria-hidden="true"></i> Business</div>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="profile-banner">
+        <div class="profile-actions">
+          <button class="btn-settings"><i class="ti ti-settings" style="font-size:14px" aria-hidden="true"></i> Settings</button>
+          <button class="btn-edit"><i class="ti ti-edit" style="font-size:14px" aria-hidden="true"></i> Edit profile</button>
+        </div>
+      </div>
+
+      <div style="padding:0 32px;position:relative">
+        <div style="position:absolute;top:-36px;left:32px">
+          <div class="profile-avatar">NK</div>
+        </div>
+      </div>
+
+      <div class="profile-info">
+        <div class="profile-name">Neha Kulkarni</div>
+        <div class="profile-handle">@neha_k · Listener since Mar 2026</div>
+        <div class="profile-bio">Avid podcast listener. Into true crime, business, and the occasional deep-dive history episode. Always looking for a good story.</div>
+        <div class="profile-tags">
+          <div class="profile-tag"><i class="ti ti-map-pin" style="font-size:11px" aria-hidden="true"></i> Hyderabad, India</div>
+          <div class="profile-tag"><i class="ti ti-headphones" style="font-size:11px" aria-hidden="true"></i> Listener</div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-player-play" aria-hidden="true"></i> Episodes played</div>
+          <div class="stat-num">184</div>
+          <div class="stat-sub">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-clock" aria-hidden="true"></i> Hours listened</div>
+          <div class="stat-num">142h</div>
+          <div class="stat-sub">↑ 12h this week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-bookmark" aria-hidden="true"></i> Saved episodes</div>
+          <div class="stat-num">37</div>
+          <div class="stat-sub">In playlist</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label"><i class="ti ti-users" aria-hidden="true"></i> Hosts followed</div>
+          <div class="stat-num">9</div>
+          <div class="stat-sub">Channels</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <div class="tab active">Playlist & history</div>
+        <div class="tab">Followed hosts</div>
+        <div class="tab">Settings</div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-title">Saved playlist <span class="see-all">See all →</span></div>
+          <div class="playlist-list">
+            <div class="pl-item">
+              <div class="pl-art c1"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+              <div class="pl-info"><div class="pl-title">The Vanishing of Room 12</div><div class="pl-host">Priya Menon · True Crime</div></div>
+              <div class="pl-dur">38 min</div>
+            </div>
+            <div class="pl-item">
+              <div class="pl-art c2"><i class="ti ti-brain" aria-hidden="true"></i></div>
+              <div class="pl-info"><div class="pl-title">Morning Rituals That Work</div><div class="pl-host">Ravi Krishnan · Self-improvement</div></div>
+              <div class="pl-dur">42 min</div>
+            </div>
+            <div class="pl-item">
+              <div class="pl-art c3"><i class="ti ti-music" aria-hidden="true"></i></div>
+              <div class="pl-info"><div class="pl-title">Late Night Frequencies Vol. 4</div><div class="pl-host">DJ Kapoor · Music</div></div>
+              <div class="pl-dur">60 min</div>
+            </div>
+            <div class="pl-item">
+              <div class="pl-art c1"><i class="ti ti-currency-rupee" aria-hidden="true"></i></div>
+              <div class="pl-info"><div class="pl-title">The Startup Grind #42</div><div class="pl-host">Arjun Sharma · Business</div></div>
+              <div class="pl-dur">51 min</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-title">Recently played <span class="see-all">See all →</span></div>
+          <div class="history-list">
+            <div class="hist-item">
+              <div class="hist-art"><i class="ti ti-microphone-2" aria-hidden="true"></i></div>
+              <div class="hist-info"><div class="hist-title">The Vanishing of Room 12</div><div class="hist-meta">Priya Menon · 2 hrs ago</div></div>
+              <div class="hist-progress"><div class="hist-bar"><div class="hist-fill" style="width:60%"></div></div><div class="hist-pct">60%</div></div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-art" style="background:#713600"><i class="ti ti-run" aria-hidden="true"></i></div>
+              <div class="hist-info"><div class="hist-title">Race Day Mindset</div><div class="hist-meta">Coach Nair · Yesterday</div></div>
+              <div class="hist-progress"><div class="hist-bar"><div class="hist-fill" style="width:100%"></div></div><div class="hist-pct">Done</div></div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-art" style="background:#C05800aa"><i class="ti ti-mood-happy" aria-hidden="true"></i></div>
+              <div class="hist-info"><div class="hist-title">Totally Unscripted Ep. 9</div><div class="hist-meta">Meera & Zaid · 2 days ago</div></div>
+              <div class="hist-progress"><div class="hist-bar"><div class="hist-fill" style="width:85%"></div></div><div class="hist-pct">85%</div></div>
+            </div>
+            <div class="hist-item">
+              <div class="hist-art"><i class="ti ti-brain" aria-hidden="true"></i></div>
+              <div class="hist-info"><div class="hist-title">Morning Rituals That Work</div><div class="hist-meta">Ravi Krishnan · 3 days ago</div></div>
+              <div class="hist-progress"><div class="hist-bar"><div class="hist-fill" style="width:100%"></div></div><div class="hist-pct">Done</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fav-cats">
+        <div class="fav-section-title">Top categories you listen to</div>
+        <div class="cat-bars">
+          <div class="cat-bar-item">
+            <div class="cat-bar-label">True Crime</div>
+            <div class="cat-bar-track"><div class="cat-bar-fill" style="width:82%"></div></div>
+            <div class="cat-bar-count">52 episodes</div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label">Business</div>
+            <div class="cat-bar-track"><div class="cat-bar-fill" style="width:64%"></div></div>
+            <div class="cat-bar-count">41 episodes</div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label">Music</div>
+            <div class="cat-bar-track"><div class="cat-bar-fill" style="width:48%"></div></div>
+            <div class="cat-bar-count">30 episodes</div>
+          </div>
+          <div class="cat-bar-item">
+            <div class="cat-bar-label">Comedy</div>
+            <div class="cat-bar-track"><div class="cat-bar-fill" style="width:36%"></div></div>
+            <div class="cat-bar-count">23 episodes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="followed-hosts">
+        <div class="fav-section-title">Hosts you follow</div>
+        <div class="hosts-row">
+          <div class="host-chip"><div class="host-chip-av" style="background:#713600">PM</div><div class="host-chip-name">Priya Menon</div><div class="host-chip-ep">24 episodes</div></div>
+          <div class="host-chip"><div class="host-chip-av" style="background:#C05800">AS</div><div class="host-chip-name">Arjun Sharma</div><div class="host-chip-ep">43 episodes</div></div>
+          <div class="host-chip"><div class="host-chip-av" style="background:#38240D">RK</div><div class="host-chip-name">Ravi Krishnan</div><div class="host-chip-ep">18 episodes</div></div>
+          <div class="host-chip"><div class="host-chip-av" style="background:#71360088">DK</div><div class="host-chip-name">DJ Kapoor</div><div class="host-chip-ep">11 episodes</div></div>
+          <div class="host-chip"><div class="host-chip-av" style="background:#C05800aa">MZ</div><div class="host-chip-name">Meera & Zaid</div><div class="host-chip-ep">10 episodes</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="label-bar">Listener profile screen</div>
+</div>
