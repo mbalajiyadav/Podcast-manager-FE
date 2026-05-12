@@ -1,0 +1,122 @@
+export const podcastsMock = [
+  {
+    id: '1',
+    title: 'The Daily Tech',
+    author: 'Sarah Chen',
+    description: 'Deep dives into the latest technology trends and breakthroughs.',
+    category: 'Technology',
+    episodeCount: 156,
+    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=200&h=200&fit=crop',
+    addedAt: '2025-03-10T14:30:00Z',
+    rating: 4.8,
+    playCount: 1250
+  },
+  {
+    id: '2',
+    title: 'Mindful Mornings',
+    author: 'David Miller',
+    description: 'Start your day with clarity and purpose through guided meditation.',
+    category: 'Health & Wellness',
+    episodeCount: 324,
+    imageUrl: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=200&h=200&fit=crop',
+    addedAt: '2025-03-12T09:15:00Z',
+    rating: 4.9,
+    playCount: 8420
+  },
+  {
+    id: '3',
+    title: 'Entrepreneur Unleashed',
+    author: 'Alex Rivera',
+    description: 'Interviews with successful founders sharing their journey to the top.',
+    category: 'Business',
+    episodeCount: 89,
+    imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=200&h=200&fit=crop',
+    addedAt: '2025-03-11T16:45:00Z',
+    rating: 4.7,
+    playCount: 3200
+  },
+  {
+    id: '4',
+    title: 'True Mystery Files',
+    author: 'Elena Rossi',
+    description: 'Uncovering the worlds most baffling cold cases and unexplained events.',
+    category: 'True Crime',
+    episodeCount: 112,
+    imageUrl: 'https://images.unsplash.com/photo-1453728013993-6d66e9c9123a?w=200&h=200&fit=crop',
+    addedAt: '2025-03-15T10:30:00Z',
+    rating: 4.6,
+    playCount: 5100
+  },
+  {
+    id: '5',
+    title: 'Culinary Chronicles',
+    author: 'Chef Marcus',
+    description: 'Exploring the history and science behind your favorite dishes.',
+    category: 'Food',
+    episodeCount: 65,
+    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop',
+    addedAt: '2025-03-08T18:20:00Z',
+    rating: 4.5,
+    playCount: 940
+  },
+  {
+    id: '6',
+    title: 'Space Explorers',
+    author: 'Dr. Leo Grant',
+    description: 'The final frontier explained for everyone. From black holes to Mars.',
+    category: 'Science',
+    episodeCount: 94,
+    imageUrl: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=200&h=200&fit=crop',
+    addedAt: '2025-03-14T11:00:00Z',
+    rating: 4.8,
+    playCount: 2100
+  },
+  {
+    id: '7',
+    title: 'The Creative Spark',
+    author: 'Maya Lin',
+    description: 'Conversations with artists, designers, and thinkers about the creative process.',
+    category: 'Art',
+    episodeCount: 78,
+    imageUrl: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=200&h=200&fit=crop',
+    addedAt: '2025-03-05T13:40:00Z',
+    rating: 4.7,
+    playCount: 1560
+  },
+  {
+    id: '8',
+    title: 'Global Markets Weekly',
+    author: 'Financial Times',
+    description: 'Your weekly wrap-up of world economy and financial news.',
+    category: 'Finance',
+    episodeCount: 245,
+    imageUrl: 'https://images.unsplash.com/photo-1611974714014-4b50d1a660a9?w=200&h=200&fit=crop',
+    addedAt: '2025-03-09T17:55:00Z',
+    rating: 4.4,
+    playCount: 3800
+  },
+  {
+    id: '9',
+    title: 'Laugh Out Loud',
+    author: 'Kevin & Jen',
+    description: 'Stand-up comedy, sketches, and hilarious banter every Tuesday.',
+    category: 'Comedy',
+    episodeCount: 187,
+    imageUrl: 'https://images.unsplash.com/photo-1527224857830-43a7acc85260?w=200&h=200&fit=crop',
+    addedAt: '2025-03-16T20:10:00Z',
+    rating: 4.9,
+    playCount: 12400
+  },
+  {
+    id: '10',
+    title: 'The History Vault',
+    author: 'Professor James',
+    description: 'Bringing past events to life with deep historical research and storytelling.',
+    category: 'History',
+    episodeCount: 134,
+    imageUrl: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=200&h=200&fit=crop',
+    addedAt: '2025-03-07T15:25:00Z',
+    rating: 4.8,
+    playCount: 2900
+  }
+];

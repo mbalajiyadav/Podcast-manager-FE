@@ -48,22 +48,7 @@
   opacity: 0.9;
 }
 
-.btn-settings {
-  background: transparent;
-  border: 1.5px solid rgba(253, 251, 212, 0.2);
-  color: var(--b-bg);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
 
-.btn-settings:hover {
-  background: rgba(253, 251, 212, 0.1);
-}
 
 .profile-header-pos {
   padding: 0 32px;
@@ -514,7 +499,7 @@
   .insights-grid { grid-template-columns: 1fr !important; }
   .hosts-chip-row { grid-template-columns: 1fr 1fr !important; }
   
-  .btn-edit, .btn-settings {
+  .btn-edit {
     padding: 6px 10px;
     font-size: 11px;
     width: fit-content;

@@ -142,7 +142,16 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 4px 12px rgba(192, 88, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -154,6 +163,15 @@
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: rgba(113, 54, 0, 0.05);
 }
 
 .hero-right {
@@ -469,5 +487,18 @@
   .nav-btn, .nav-btn-ghost {
     padding: 6px 12px;
     font-size: 12px;
+  }
+
+  .hero-btns {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 12px 24px;
   }
 }

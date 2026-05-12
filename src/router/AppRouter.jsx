@@ -26,6 +26,7 @@ import EpisodeReview from '../pages/admin/EpisodeReview'
 // Common Pages
 import Landing from '../pages/common/Landing'
 import Analytics from '../pages/common/Analytics'
+import SearchPage from '../pages/SearchPage'
 import NotFound from '../pages/common/NotFound'
 
 import MainLayout from '../components/layout/MainLayout'
@@ -46,6 +47,7 @@ export default function AppRouter() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/playlist" element={<Playlist />} />
+          <Route path="/search" element={<SearchPage />} />
           <Route path="/episode/:id" element={<EpisodeDetail />} />
 
           {/* Host routes */}

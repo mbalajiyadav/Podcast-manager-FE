@@ -22,6 +22,20 @@ const Browse = () => {
   ]);
 
   const [activeCategory, setActiveCategory] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filterEpisodes = (episodes) => {
+    return episodes.filter(ep => {
+      const matchesCategory = activeCategory === 'All' || ep.category === activeCategory;
+      const matchesSearch = ep.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                           ep.host.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  };
+
+  const filteredFeatured = filterEpisodes(featuredEpisodes);
+  const filteredNewArrivals = filterEpisodes(newArrivals);
+  const hasResults = filteredFeatured.length > 0 || filteredNewArrivals.length > 0;
 
   // Icons
   const icons = {
@@ -60,7 +74,12 @@ const Browse = () => {
       <div className="b-search-row">
         <div className="b-search-wrap">
           <i>{icons.search}</i>
-          <input className="b-search-input" placeholder="Search episodes or hosts…" />
+          <input 
+            className="b-search-input" 
+            placeholder="Search episodes or hosts…" 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
         <button className="b-filter-btn">{icons.filter} Filter</button>
       </div>
@@ -77,21 +96,35 @@ const Browse = () => {
         ))}
       </div>
 
-      <div className="b-section-head">
-        <div className="b-section-title">Featured episodes</div>
-        <div className="b-see-all">See all →</div>
-      </div>
-      <div className="b-ep-grid">
-        {featuredEpisodes.map(ep => <EpCard key={ep.id} ep={ep} />)}
-      </div>
+      {!hasResults && (
+        <div className="b-no-results">
+          No episodes found matching "{searchQuery}" in {activeCategory}
+        </div>
+      )}
 
-      <div className="b-section-head">
-        <div className="b-section-title">New arrivals</div>
-        <div className="b-see-all">See all →</div>
-      </div>
-      <div className="b-ep-grid">
-        {newArrivals.map(ep => <EpCard key={ep.id} ep={ep} />)}
-      </div>
+      {filteredFeatured.length > 0 && (
+        <>
+          <div className="b-section-head">
+            <div className="b-section-title">Featured episodes</div>
+            <div className="b-see-all">See all →</div>
+          </div>
+          <div className="b-ep-grid">
+            {filteredFeatured.map(ep => <EpCard key={ep.id} ep={ep} />)}
+          </div>
+        </>
+      )}
+
+      {filteredNewArrivals.length > 0 && (
+        <>
+          <div className="b-section-head">
+            <div className="b-section-title">New arrivals</div>
+            <div className="b-see-all">See all →</div>
+          </div>
+          <div className="b-ep-grid">
+            {filteredNewArrivals.map(ep => <EpCard key={ep.id} ep={ep} />)}
+          </div>
+        </>
+      )}
     </>
   );
 };

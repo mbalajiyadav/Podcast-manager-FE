@@ -55,24 +55,7 @@
   opacity: 0.9;
 }
 
-.btn-settings {
-  background: transparent;
-  border: 1.5px solid rgba(253, 251, 212, 0.2);
-  color: var(--b-bg);
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s;
-}
 
-.btn-settings:hover {
-  background: rgba(253, 251, 212, 0.1);
-}
 
 .profile-header-wrap {
   padding: 0 32px;
@@ -353,7 +336,6 @@
   }
   
   .btn-edit { padding: 6px 10px; font-size: 11px; width: fit-content; }
-  .btn-settings { padding: 6px 10px; font-size: 11px; width: fit-content; }
   
   .stats-grid { 
     grid-template-columns: 1fr !important; 

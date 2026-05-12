@@ -7,10 +7,14 @@ import storage from 'redux-persist/lib/storage'
 import { combineReducers } from 'redux'
 import authReducer from '../features/auth/authSlice'
 import masterReducer from '../features/master/masterSlice'
+import searchReducer from '../features/search/searchSlice'
+import playlistReducer from '../features/playlist/playlistSlice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  master: masterReducer,   // master NOT persisted (re-fetch on login)
+  master: masterReducer,
+  search: searchReducer,
+  playlist: playlistReducer,
 })
 
 const persistedReducer = persistReducer({

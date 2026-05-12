@@ -33,7 +33,6 @@ const Sidebar = () => {
       { id: 'host-dash', label: 'Host Studio', icon: icons.browse, path: '/host/dashboard' },
       { id: 'my-podcasts', label: 'My Podcasts', icon: icons.music, path: '/host/listings' },
       { id: 'upload', label: 'Upload Episode', icon: icons.upload, path: '/host/upload' },
-      { id: 'host-analytics', label: 'Analytics', icon: icons.analytics, path: '/host/analytics' },
       { id: 'host-profile', label: 'Profile', icon: icons.users, path: '/host/profile' },
     ],
     admin: [
@@ -42,7 +41,6 @@ const Sidebar = () => {
       { id: 'users', label: 'All users', icon: icons.users, path: '/admin/users' },
       { id: 'all-episodes', label: 'All episodes', icon: icons.music, path: '/admin/episodes' },
       { id: 'platform-stats', label: 'Platform stats', icon: icons.analytics, path: '/admin/stats' },
-      { id: 'settings', label: 'Settings', icon: icons.trending, path: '/admin/settings' },
     ]
   };
 

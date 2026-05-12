@@ -19,7 +19,7 @@ const masterSlice = createSlice({
   initialState: {
     categories: [],
     roles: [],
-    config: {},   // app-wide settings
+    config: {},
     status: 'idle',  // idle | loading | succeeded | failed
     error: null,
   },

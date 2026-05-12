@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { playlistService } from '../../services/playlistService';
+import { 
+  setPlaylistItems, 
+  selectFilteredPlaylist, 
+  selectPlaylistItems,
+  selectActiveCategory 
+} from '../../features/playlist/playlistSlice';
+import PlaylistFilters from '../../components/playlist/PlaylistFilters';
 import './Playlist.css';
 
 const Playlist = () => {
   const navigate = useNavigate();
-  const [episodes, setEpisodes] = useState([]);
+  const dispatch = useDispatch();
+  
+  const allEpisodes = useSelector(selectPlaylistItems);
+  const filteredEpisodes = useSelector(selectFilteredPlaylist);
+  const activeCategory = useSelector(selectActiveCategory);
+  
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ totalCount: 0, totalDuration: '' });
 
@@ -29,7 +42,7 @@ const Playlist = () => {
     setLoading(true);
     try {
       const response = await playlistService.getUserPlaylist();
-      setEpisodes(response.data);
+      dispatch(setPlaylistItems(response.data));
       setStats({
         totalCount: response.totalCount,
         totalDuration: response.totalDuration
@@ -44,8 +57,9 @@ const Playlist = () => {
   const handleRemove = async (id) => {
     try {
       await playlistService.removeFromPlaylist(id);
-      setEpisodes(prev => prev.filter(ep => ep.id !== id));
-      // Update stats locally or re-fetch
+      const updatedList = allEpisodes.filter(ep => ep.id !== id);
+      dispatch(setPlaylistItems(updatedList));
+      setStats(prev => ({ ...prev, totalCount: prev.totalCount - 1 }));
     } catch (error) {
       console.error("Failed to remove item", error);
     }
@@ -76,13 +90,16 @@ const Playlist = () => {
       <div className="page-head">
         <div>
           <div className="page-title">My Playlist</div>
-          <div className="page-sub">{stats.totalCount} saved episodes · {stats.totalDuration} total</div>
+          <div className="page-sub">
+            Showing {filteredEpisodes.length} of {allEpisodes.length} episodes · {stats.totalDuration} total
+          </div>
         </div>
-        <button className="sort-btn"><i>{icons.sort}</i> Sort</button>
       </div>
 
+      <PlaylistFilters />
+
       <div className="playlist-list">
-        {episodes.map((ep, index) => (
+        {filteredEpisodes.map((ep, index) => (
           <div 
             key={ep.id} 
             className={`pl-item ${ep.isCurrentlyPlaying ? 'active' : ''}`}
@@ -134,7 +151,13 @@ const Playlist = () => {
           </div>
         ))}
 
-        {episodes.length === 0 && (
+        {allEpisodes.length > 0 && filteredEpisodes.length === 0 && (
+          <div className="playlist-empty">
+            <p>No podcasts in the "{activeCategory}" category yet.</p>
+          </div>
+        )}
+
+        {allEpisodes.length === 0 && (
           <div className="playlist-empty">
             <p>Your playlist is empty. Browse episodes to add them here!</p>
           </div>

@@ -211,3 +211,11 @@
   font-weight: 700;
   cursor: pointer;
 }
+
+.b-no-results {
+  padding: 60px 32px;
+  text-align: center;
+  color: var(--b-dark);
+  font-weight: 500;
+  opacity: 0.6;
+}

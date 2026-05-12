@@ -76,8 +76,8 @@ const Landing = () => {
           <h1 className="hero-h1">Discover stories<br />that move <span>you.</span></h1>
           <p className="hero-sub">Stream thousands of podcast episodes across every genre. Hosted by creators who care, curated by an admin who approves only the best.</p>
           <div className="hero-btns">
-            <button className="btn-primary">Start listening</button>
-            <button className="btn-secondary">Become a host</button>
+            <Link to="/dashboard" className="btn-primary">Start listening</Link>
+            <Link to="/register" className="btn-secondary">Become a host</Link>
           </div>
           <div className="stats-row">
             <div className="stat">
@@ -149,7 +149,7 @@ const Landing = () => {
         </div>
         <div className="ep-grid">
           {trendingEpisodes.map(ep => (
-            <div key={ep.id} className="ep-card">
+            <Link to={`/episode/${ep.id}`} key={ep.id} className="ep-card" style={{ textDecoration: 'none' }}>
               <div className="ep-art" style={{ backgroundColor: ep.artColor }}>
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
               </div>
@@ -162,10 +162,10 @@ const Landing = () => {
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ marginRight: '4px' }}><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     {ep.plays} plays
                   </div>
-                  <button className="ep-play-btn">Play</button>
+                  <div className="ep-play-btn">Play</div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
