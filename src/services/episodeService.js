@@ -1,44 +1,62 @@
-/**
- * Mock Service for Episode Detail Data
- */
+import api from './axiosInstance';
 
 export const episodeService = {
+  /**
+   * Get single episode detail
+   */
   getEpisodeDetails: async (id) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          id,
-          title: 'The Vanishing of Room 12',
-          category: 'True Crime & Mystery',
-          host: 'Priya Menon',
-          hostAvatar: 'PM',
-          plays: '8,241',
-          duration: '38 min',
-          date: 'Apr 22, 2026',
-          description: 'A hotel room sealed from the inside. A guest who vanished without a trace. In this episode, Priya reconstructs the chilling events of March 1988, piecing together eyewitness accounts, police reports, and one never-before-heard recording that changes everything. What really happened in Room 12?',
-          hostStats: {
-            episodeCount: 24,
-            totalPlays: '142k'
-          }
-        });
-      }, 500);
-    });
+    try {
+      const response = await api.get(`/episodes/${id}`);
+      const ep = response.data;
+      
+      return {
+        id: ep._id,
+        title: ep.title,
+        category: ep.content_type_id?.category_name || 'Podcast',
+        host: ep.channel_id?.host_id ? `${ep.channel_id.host_id.first_name || ''} ${ep.channel_id.host_id.last_name || ''}`.trim() : 'Unknown Host',
+        hostAvatar: ep.channel_id?.host_id?.first_name?.charAt(0) || 'H',
+        plays: ep.views_count?.toLocaleString() || '0',
+        duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
+        date: new Date(ep.created_on).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        description: ep.description,
+        audioUrl: ep.content_url || ep.audio_s3_key,
+        imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key,
+        hostStats: {
+          episodeCount: 0, // In real app, might need extra call or aggregation
+          totalPlays: '0'
+        }
+      };
+    } catch (error) {
+      console.error(`Error fetching episode ${id}:`, error);
+      return null;
+    }
   },
 
-  getMoreFromHost: async (hostId) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          { id: 101, title: 'The Missing Heiress', duration: '42 min', host: 'Priya Menon' },
-          { id: 102, title: 'Cold Case: Bombay 1974', duration: '56 min', host: 'Priya Menon' },
-          { id: 103, title: 'The Forgotten Witness', duration: '33 min', host: 'Priya Menon' },
-          { id: 104, title: 'Dead Letters', duration: '48 min', host: 'Priya Menon' }
-        ]);
-      }, 500);
-    });
+  /**
+   * Get more episodes from the same host/channel
+   */
+  getMoreFromHost: async (channelId) => {
+    try {
+      const response = await api.get('/episodes', { params: { channel: channelId } });
+      const episodes = response.data;
+      
+      return episodes.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
+        host: ep.channel_id?.name || 'Unknown'
+      }));
+    } catch (error) {
+      console.error('Error fetching more from host:', error);
+      return [];
+    }
   },
 
+  /**
+   * Toggle follow host (Mocked as backend doesn't have follow system yet)
+   */
   toggleFollowHost: async (hostId) => {
+    // Backend doesn't have a follow system yet
     return new Promise((resolve) => {
       setTimeout(() => resolve({ success: true, following: true }), 300);
     });

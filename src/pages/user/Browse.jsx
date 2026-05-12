@@ -1,34 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Browse.css';
 
+import { podcastService } from '../../services/podcastService';
+
 const Browse = () => {
   const navigate = useNavigate();
-  // Mock data states
-  const [featuredEpisodes] = useState([
-    { id: 1, category: 'True Crime', title: 'The Vanishing of Room 12', host: 'Priya Menon', duration: '38 min', plays: '8.2k', artColor: '#713600' },
-    { id: 2, category: 'Self-improvement', title: 'Morning Rituals That Work', host: 'Ravi Krishnan', duration: '42 min', plays: '6.7k', artColor: '#38240D' },
-    { id: 3, category: 'Music', title: 'Late Night Frequencies Vol. 4', host: 'DJ Kapoor', duration: '60 min', plays: '5.4k', artColor: '#C05800cc' }
-  ]);
-
-  const [newArrivals] = useState([
-    { id: 4, category: 'Business', title: 'The Startup Grind #43', host: 'Arjun Sharma', duration: '51 min', plays: '320', artColor: '#38240D' },
-    { id: 5, category: 'Sports', title: 'Race Day Mindset', host: 'Coach Nair', duration: '27 min', plays: '198', artColor: '#713600' },
-    { id: 6, category: 'Comedy', title: 'Unscripted with Meera Ep. 10', host: 'Meera & Zaid', duration: '44 min', plays: '411', artColor: '#C05800cc' }
-  ]);
-
+  const [featuredEpisodes, setFeaturedEpisodes] = useState([]);
+  const [newArrivals, setNewArrivals] = useState([]);
   const [categories] = useState([
     'All', 'Music', 'True Crime', 'Business', 'Comedy', 'Wellness', 'News', 'Sports'
   ]);
-
   const [activeCategory, setActiveCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchEpisodes = async () => {
+      setIsLoading(true);
+      try {
+        const data = await podcastService.searchPodcasts('');
+        setFeaturedEpisodes(data.slice(0, 3));
+        setNewArrivals(data.slice(3, 9));
+      } catch (error) {
+        console.error('Error fetching episodes:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchEpisodes();
+  }, []);
 
   const filterEpisodes = (episodes) => {
     return episodes.filter(ep => {
       const matchesCategory = activeCategory === 'All' || ep.category === activeCategory;
       const matchesSearch = ep.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                           ep.host.toLowerCase().includes(searchQuery.toLowerCase());
+                           ep.author.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   };
@@ -50,24 +57,30 @@ const Browse = () => {
 
   const EpCard = ({ ep }) => (
     <div className="b-ep-card" onClick={() => navigate(`/episode/${ep.id}`)}>
-      <div className="b-ep-art" style={{ backgroundColor: ep.artColor }}>
-        {ep.category === 'True Crime' || ep.category === 'Sports' ? icons.mic : 
-         ep.category === 'Self-improvement' ? icons.brain : icons.music}
+      <div className="b-ep-art" style={{ backgroundColor: ep.artColor || '#713600' }}>
+        {ep.imageUrl ? (
+          <img src={ep.imageUrl} alt={ep.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }} />
+        ) : (
+          ep.category === 'True Crime' || ep.category === 'Sports' ? icons.mic : 
+          ep.category === 'Self-improvement' ? icons.brain : icons.music
+        )}
       </div>
       <div className="b-ep-body">
         <div className="b-ep-cat">{ep.category}</div>
         <div className="b-ep-title">{ep.title}</div>
-        <div className="b-ep-host">{ep.host} · {ep.duration}</div>
+        <div className="b-ep-host">{ep.author} · {ep.duration || '0 min'}</div>
         <div className="b-ep-footer">
-          <div className="b-ep-plays">{icons.play} {ep.plays}</div>
+          <div className="b-ep-plays">{icons.play} {ep.playCount || ep.plays || 0}</div>
           <div className="b-ep-actions">
-            <button className="b-ep-save">{icons.bookmark}</button>
+            <button className="b-ep-save" onClick={(e) => { e.stopPropagation(); /* save logic */ }}>{icons.bookmark}</button>
             <button className="b-ep-play-btn">Play</button>
           </div>
         </div>
       </div>
     </div>
   );
+
+  if (isLoading) return <div className="b-loading">Loading episodes...</div>;
 
   return (
     <>

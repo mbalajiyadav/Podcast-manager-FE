@@ -1,0 +1,206 @@
+.admin-episodes-page {
+  padding: 24px;
+  background: #fdfaf5;
+  min-height: 100vh;
+}
+
+.admin-episodes-main {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 24px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.page-sub {
+  color: #666;
+  font-size: 14px;
+}
+
+.controls-row {
+  display: flex;
+  gap: 12px;
+}
+
+.search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-wrap i {
+  position: absolute;
+  left: 12px;
+  color: #999;
+}
+
+.search-wrap input {
+  padding: 8px 12px 8px 34px;
+  border: 1px solid #e0d0b0;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  width: 280px;
+  outline: none;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #e0d0b0;
+  border-radius: 8px;
+  background: white;
+  font-size: 14px;
+  color: #444;
+  outline: none;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e0d0b0;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(113, 54, 0, 0.05);
+}
+
+.episodes-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.episodes-table th {
+  padding: 16px;
+  background: #faf7f0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  border-bottom: 1px solid #e0d0b0;
+}
+
+.episodes-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f0e6d0;
+  font-size: 14px;
+  color: #333;
+}
+
+.ep-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ep-art-mini {
+  width: 32px;
+  height: 32px;
+  background: #e0d0b0;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ep-title-text {
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-approved { background: #e6f7e6; color: #1e7e1e; }
+.status-pending { background: #fff4e6; color: #d47a00; }
+.status-rejected { background: #fbeaea; color: #c53030; }
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.dot-a { background: #1e7e1e; }
+.dot-p { background: #d47a00; }
+.dot-r { background: #c53030; }
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.act {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: none;
+}
+
+.act-review {
+  background: #ff8a00;
+  color: white;
+}
+
+.act-view {
+  border-color: #e0d0b0;
+  color: #713600;
+}
+
+.act-delete {
+  color: #c53030;
+  padding: 6px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 24px;
+}
+
+.pag-info {
+  font-size: 14px;
+  color: #666;
+}
+
+.pag-btns {
+  display: flex;
+  gap: 4px;
+}
+
+.pag-btn {
+  padding: 8px 12px;
+  border: 1px solid #e0d0b0;
+  background: white;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #444;
+}
+
+.pag-btn.active {
+  background: #ff8a00;
+  color: white;
+  border-color: #ff8a00;
+}

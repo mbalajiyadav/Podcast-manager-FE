@@ -1,137 +1,189 @@
-/**
- * Mock Service for Admin Dashboard Data
- */
-
-const mockPendingQueue = [
-  {
-    id: 1,
-    title: 'The Startup Grind #44',
-    host: 'Arjun Sharma',
-    timeAgo: '2 hrs ago',
-    description: 'In this episode, three founders discuss finding product-market fit...',
-    category: 'Business',
-    duration: '51 min'
-  },
-  {
-    id: 2,
-    title: 'Night Frequencies Vol. 5',
-    host: 'DJ Kapoor',
-    timeAgo: '5 hrs ago',
-    description: 'A smooth late-night mix blending deep house and electronic grooves...',
-    category: 'Music',
-    duration: '60 min'
-  },
-  {
-    id: 3,
-    title: 'Race Day Mindset',
-    host: 'Coach Nair',
-    timeAgo: '8 hrs ago',
-    description: 'Mental preparation techniques for endurance athletes on race day...',
-    category: 'Sports',
-    duration: '27 min'
-  }
-];
-
-const mockAllUsers = [
-  { id: 1, name: 'Priya Menon', email: 'priya@example.com', role: 'Host', stats: '24 eps · 142k plays', joined: 'Jan 12, 2026', status: 'Active', avatarBg: '#713600', initials: 'PM' },
-  { id: 2, name: 'Arjun Sharma', email: 'arjun@example.com', role: 'Host', stats: '43 eps · 62k plays', joined: 'Feb 4, 2026', status: 'Active', avatarBg: '#C05800', initials: 'AS' },
-  { id: 3, name: 'Neha Kulkarni', email: 'neha@example.com', role: 'Listener', stats: '— · 2.1k plays', joined: 'Mar 17, 2026', status: 'Active', avatarBg: '#38240D', initials: 'NK' },
-  { id: 4, name: 'Zaid Hussain', email: 'zaid@example.com', role: 'Listener', stats: '— · 880 plays', joined: 'Apr 2, 2026', status: 'Inactive', avatarBg: '#71360088', initials: 'ZH' },
-  { id: 5, name: 'Ravi Krishnan', email: 'ravi@example.com', role: 'Host', stats: '18 eps · 38k plays', joined: 'Dec 29, 2025', status: 'Active', avatarBg: '#C05800', initials: 'RK' },
-  { id: 6, name: 'Meera Singh', email: 'meera@example.com', role: 'Host', stats: '9 eps · 11k plays', joined: 'Apr 21, 2026', status: 'Active', avatarBg: '#713600', initials: 'MS' },
-  { id: 7, name: 'Coach Nair', email: 'coach.nair@example.com', role: 'Host', stats: '6 eps · 4.8k plays', joined: 'May 9, 2026', status: 'Active', avatarBg: '#38240D', initials: 'CN' }
-];
+import api from './axiosInstance';
 
 export const adminService = {
+  /**
+   * Get platform statistics for the admin dashboard
+   */
   getPlatformStats: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          totalEpisodes: '2,418',
-          totalPlays: '1.2M',
-          activeHosts: 184,
-          listeners: '12,400'
-        });
-      }, 500);
-    });
+    try {
+      const response = await api.get('/admin/stats');
+      const stats = response.data;
+      return {
+        totalEpisodes: stats.totalEpisodes.toLocaleString(),
+        totalPlays: stats.totalPlays.toLocaleString(),
+        activeHosts: stats.totalHosts,
+        listeners: stats.totalListeners.toLocaleString()
+      };
+    } catch (error) {
+      console.error('Error fetching admin stats:', error);
+      return { totalEpisodes: '0', totalPlays: '0', activeHosts: 0, listeners: '0' };
+    }
   },
 
+  /**
+   * Get list of episodes pending review
+   */
   getPendingQueue: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockPendingQueue), 500);
-    });
+    try {
+      const response = await api.get('/episodes/pending');
+      return response.data.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        host: ep.user_id ? `${ep.user_id.first_name || ''} ${ep.user_id.last_name || ''}`.trim() : 'Unknown',
+        timeAgo: new Date(ep.created_on).toLocaleDateString(),
+        description: ep.description,
+        category: ep.content_type_id?.type_description || 'Podcast',
+        duration: `${Math.floor(ep.duration_in_seconds / 60)} min`
+      }));
+    } catch (error) {
+      console.error('Error fetching pending queue:', error);
+      return [];
+    }
   },
 
-  getRecentUsers: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve(mockAllUsers.slice(0, 5)), 500);
-    });
-  },
-
+  /**
+   * Get summary of all users (paginated/filtered in real app)
+   */
   getAllUsers: async (filters = {}) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        let users = [...mockAllUsers];
-        if (filters.role && filters.role !== 'All roles') {
-          const targetRole = filters.role === 'Hosts' ? 'Host' : 'Listener';
-          users = users.filter(u => u.role === targetRole);
-        }
-        if (filters.status && filters.status !== 'All statuses') {
-          users = users.filter(u => u.status === filters.status);
-        }
-        if (filters.search) {
-          const query = filters.search.toLowerCase();
-          users = users.filter(u => 
-            u.name.toLowerCase().includes(query) || 
-            u.email.toLowerCase().includes(query)
-          );
-        }
-        resolve({
-          users,
-          totalCount: 12584
-        });
-      }, 500);
-    });
+    try {
+      const sanitizedFilters = {};
+      if (filters.role && filters.role !== 'All roles') {
+        sanitizedFilters.role = filters.role === 'Hosts' ? 'HOST' : 'LISTENER';
+      }
+      if (filters.status && filters.status !== 'All statuses') {
+        sanitizedFilters.status = filters.status.toLowerCase();
+      }
+      if (filters.search) {
+        sanitizedFilters.search = filters.search;
+      }
+
+      const response = await api.get('/users', { params: sanitizedFilters });
+      const users = response.data.map(u => ({
+        id: u._id,
+        name: `${u.first_name} ${u.last_name}`,
+        email: u.email_id,
+        role: u.role_id?.role_code || 'LISTENER',
+        joined: new Date(u.created_on).toLocaleDateString(),
+        status: u.is_active ? 'Active' : 'Inactive',
+        initials: `${(u.first_name || 'U').charAt(0)}${(u.last_name || '').charAt(0)}`
+      }));
+      return {
+        users,
+        totalCount: users.length
+      };
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return { users: [], totalCount: 0 };
+    }
   },
 
+  /**
+   * Get recent users for dashboard (alias for getAllUsers returning just array)
+   */
+  getRecentUsers: async () => {
+    const data = await adminService.getAllUsers();
+    return data.users;
+  },
+
+  /**
+   * Get details for an episode under review
+   */
   getEpisodeReviewData: async (id) => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          id,
-          title: 'The Startup Grind #44 — Finding Product-Market Fit',
-          host: 'Arjun Sharma',
-          hostChannel: 'The Startup Grind',
-          category: 'Business & entrepreneurship',
-          duration: '51 min',
-          submittedAt: 'May 9, 2026',
-          fileInfo: 'MP3 · 48.2 MB',
-          description: "In this episode, we sit down with three founders who've cracked the code on product-market fit. What does it really feel like when you've found it — and how do you know when you've lost it? A deeply honest conversation about the moments that change everything.",
-          hostStats: {
-            totalEpisodes: 43,
-            totalPlays: '62k',
-            approved: 40,
-            rejected: 1
-          },
-          otherEpisodes: [
-            { id: 10, title: 'Fundraising 101 — Ep. 42', duration: '51 min', status: 'Approved' },
-            { id: 11, title: 'Pitch Perfect — Ep. 41', duration: '44 min', status: 'Approved' },
-            { id: 12, title: 'Building the MVP — Ep. 40', duration: '58 min', status: 'Approved' }
-          ]
-        });
-      }, 500);
-    });
+    try {
+      const response = await api.get(`/episodes/${id}`);
+      const ep = response.data;
+      
+      return {
+        id: ep._id,
+        title: ep.title,
+        host: ep.user_id ? `${ep.user_id.first_name || ''} ${ep.user_id.last_name || ''}`.trim() : 'Unknown',
+        hostChannel: ep.channel_id?.name || 'Unknown Channel',
+        category: ep.content_type_id?.type_description || 'Podcast',
+        duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
+        submittedAt: new Date(ep.created_on).toLocaleDateString(),
+        fileInfo: `MP3 · ${(ep.duration_in_seconds * 0.1).toFixed(1)} MB`, // Rough estimate
+        description: ep.description,
+        audioUrl: ep.content_url || ep.audio_s3_key,
+        hostStats: {
+          totalEpisodes: 0,
+          totalPlays: '0',
+          approved: 0,
+          rejected: 0
+        },
+        otherEpisodes: []
+      };
+    } catch (error) {
+      console.error(`Error fetching review data for ${id}:`, error);
+      return null;
+    }
   },
 
+  /**
+   * Update episode status (Approve/Reject)
+   */
   updateEpisodeStatus: async (id, status, reason = '') => {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve({ success: true }), 1000);
-    });
+    try {
+      const endpoint = status === 'approved' ? 'approve' : 'reject';
+      await api.patch(`/episodes/${id}/${endpoint}`, { reason });
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating episode status:', error);
+      throw error;
+    }
   },
 
+  /**
+   * Update user status (Active/Inactive)
+   */
   updateUserStatus: async (userId, status) => {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve({ success: true, status }), 800);
-    });
+    try {
+      const is_active = status === 'Active';
+      await api.patch(`/users/${userId}/status`, { is_active });
+      return { success: true, status };
+    } catch (error) {
+      console.error('Error updating user status:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Get all episodes for admin management
+   */
+  getAllEpisodes: async (filters = {}) => {
+    try {
+      const response = await api.get('/admin/episodes');
+      const episodes = response.data.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        host: ep.user_id ? `${ep.user_id.first_name || ''} ${ep.user_id.last_name || ''}`.trim() : 'Unknown',
+        channel: ep.channel_id?.name || 'Unknown Channel',
+        category: ep.content_type_id?.type_description || 'Podcast',
+        status: ep.approval_status_id?.approval_code || 'PENDING',
+        uploadedAt: new Date(ep.created_on).toLocaleDateString(),
+        plays: ep.views_count || 0
+      }));
+
+      // Apply client-side filters if needed
+      let filtered = episodes;
+      if (filters.status && filters.status !== 'All statuses') {
+        filtered = filtered.filter(ep => ep.status === filters.status.toUpperCase());
+      }
+      if (filters.search) {
+        const s = filters.search.toLowerCase();
+        filtered = filtered.filter(ep => 
+          ep.title.toLowerCase().includes(s) || 
+          ep.host.toLowerCase().includes(s) || 
+          ep.channel.toLowerCase().includes(s)
+        );
+      }
+
+      return {
+        episodes: filtered,
+        totalCount: episodes.length
+      };
+    } catch (error) {
+      console.error('Error fetching all episodes:', error);
+      return { episodes: [], totalCount: 0 };
+    }
   }
 };

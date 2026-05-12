@@ -2,7 +2,7 @@ import axios from 'axios'
 import { store } from '../app/store'
 import { updateToken, logout } from '../features/auth/authSlice'
 
-const api = axios.create({ baseURL: '/api' })
+const api = axios.create({ baseURL: import.meta.env.VITE_API_BASE_URL || '/api' })
 
 // Attach access token to every request
 api.interceptors.request.use((config) => {
@@ -20,7 +20,7 @@ api.interceptors.response.use(
       original._retry = true
       try {
         const refreshToken = store.getState().auth.refreshToken
-        const { data } = await axios.post('/api/auth/refresh',
+        const { data } = await axios.post(`${import.meta.env.VITE_API_BASE_URL || '/api'}/auth/refresh`,
                                           { refreshToken })
         store.dispatch(updateToken(data))
         original.headers.Authorization = `Bearer ${data.token}`

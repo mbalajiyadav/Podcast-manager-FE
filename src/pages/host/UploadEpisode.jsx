@@ -4,10 +4,10 @@ import './UploadEpisode.css';
 
 const UploadEpisode = () => {
   const [formData, setFormData] = useState({
-    title: 'The Startup Grind #44 — Finding Product-Market Fit',
-    description: "In this episode, we sit down with three founders who've cracked the code on product-market fit. What does it really feel like when you've found it?",
+    title: '',
+    description: '',
     category: 'Business & entrepreneurship',
-    duration: '51 min (auto-detected)',
+    duration: '-- min',
   });
 
   const [audioFile, setAudioFile] = useState(null);
@@ -64,11 +64,22 @@ const UploadEpisode = () => {
     submissionData.append('title', formData.title);
     submissionData.append('description', formData.description);
     submissionData.append('category', formData.category);
-    submissionData.append('audioFile', audioFile);
-    // submissionData.append('coverArt', coverArtFile);
+    submissionData.append('audio_s3_key', fileMetadata.key);
 
     const result = await hostService.submitEpisode(submissionData);
     if (result.success) {
+      alert(result.message);
+      // Reset form
+      setUploadStatus('idle');
+      setAudioFile(null);
+      setFileMetadata(null);
+      setFormData({
+        title: '',
+        description: '',
+        category: 'Business & entrepreneurship',
+        duration: '-- min'
+      });
+    } else {
       alert(result.message);
     }
   };
@@ -86,6 +97,7 @@ const UploadEpisode = () => {
             <input 
               type="text" 
               name="title"
+              placeholder="Enter episode title"
               value={formData.title} 
               onChange={handleInputChange}
             />
@@ -95,6 +107,7 @@ const UploadEpisode = () => {
             <label>Description <span className="req">*</span></label>
             <textarea 
               name="description"
+              placeholder="Describe what this episode is about"
               value={formData.description}
               onChange={handleInputChange}
             />

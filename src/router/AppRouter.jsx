@@ -20,6 +20,7 @@ import UploadEpisode from '../pages/host/UploadEpisode'
 // Admin Pages
 import AdminPanel from '../pages/admin/AdminPanel'
 import AdminUsers from '../pages/admin/AdminUsers'
+import AdminEpisodes from '../pages/admin/AdminEpisodes'
 import StatsPage from '../pages/admin/StatsPage'
 import EpisodeReview from '../pages/admin/EpisodeReview'
 
@@ -59,6 +60,7 @@ export default function AppRouter() {
           {/* Admin routes */}
           <Route path="/admin/dashboard" element={<AdminPanel />} />
           <Route path="/admin/users" element={<AdminUsers />} />
+          <Route path="/admin/episodes" element={<AdminEpisodes />} />
           <Route path="/admin/stats" element={<StatsPage />} />
           <Route path="/admin/review/:id" element={<EpisodeReview />} />
 

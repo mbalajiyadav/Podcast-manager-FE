@@ -30,13 +30,18 @@ const EpisodeDetail = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const [detailData, moreData] = await Promise.all([
-          episodeService.getEpisodeDetails(id),
-          episodeService.getMoreFromHost('host-1')
-        ]);
-        setData(detailData);
-        setMoreFromHost(moreData);
+        const detailData = await episodeService.getEpisodeDetails(id);
+        if (detailData) {
+          setData(detailData);
+          // Fetch more from the same channel
+          if (detailData.id) { // Use channel ID if available
+             // For now just fetch all episodes and filter or use the mock moreFromHost
+             const moreData = await episodeService.getMoreFromHost(detailData.hostId || 'host-1');
+             setMoreFromHost(moreData);
+          }
+        }
       } catch (error) {
         console.error("Error fetching episode data:", error);
       } finally {
@@ -66,7 +71,13 @@ const EpisodeDetail = () => {
       <div className="ep-detail-content">
         <div className="ep-main">
           <div className="ep-hero">
-            <div className="ep-cover"><i>{icons.mic}</i></div>
+            <div className="ep-cover">
+              {data.imageUrl ? (
+                <img src={data.imageUrl} alt={data.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              ) : (
+                <i>{icons.mic}</i>
+              )}
+            </div>
             <div className="ep-meta">
               <div className="ep-cat">{data.category}</div>
               <h1 className="ep-title">{data.title}</h1>

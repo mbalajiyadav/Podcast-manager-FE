@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { hostService } from '../../services/hostService';
+import { adminService } from '../../services/adminService';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { user } = useSelector((state) => state.auth);
   const path = location.pathname;
+  const [channelInfo, setChannelInfo] = useState(null);
+  const [pendingCount, setPendingCount] = useState(0);
+
+  useEffect(() => {
+    if (user?.role === 'HOST') {
+      const fetchChannel = async () => {
+        const info = await hostService.getChannelInfo();
+        if (info) setChannelInfo(info);
+      };
+      fetchChannel();
+    }
+    
+    if (user?.role === 'ADMIN') {
+      const fetchPending = async () => {
+        const queue = await adminService.getPendingQueue();
+        setPendingCount(queue.length);
+      };
+      fetchPending();
+    }
+  }, [user]);
 
   // Icons (as SVGs)
   const icons = {
@@ -37,7 +61,7 @@ const Sidebar = () => {
     ],
     admin: [
       { id: 'admin-dash', label: 'Dashboard', icon: icons.browse, path: '/admin/dashboard' },
-      { id: 'queue', label: 'Approval queue', icon: icons.history, path: '/admin/dashboard', badge: 8 },
+      { id: 'queue', label: 'Approval queue', icon: icons.history, path: '/admin/dashboard', badge: pendingCount },
       { id: 'users', label: 'All users', icon: icons.users, path: '/admin/users' },
       { id: 'all-episodes', label: 'All episodes', icon: icons.music, path: '/admin/episodes' },
       { id: 'platform-stats', label: 'Platform stats', icon: icons.analytics, path: '/admin/stats' },
@@ -61,8 +85,8 @@ const Sidebar = () => {
     <div className="channel-card">
       <div className="ch-avatar">{icons.mic}</div>
       <div className="ch-info">
-        <div className="ch-name">The Startup Grind</div>
-        <div className="ch-sub">43 episodes · Host</div>
+        <div className="ch-name">{channelInfo?.name || user?.name || 'My Channel'}</div>
+        <div className="ch-sub">{channelInfo?.episodeCount || 0} episodes · Host</div>
       </div>
     </div>
   );
@@ -80,7 +104,7 @@ const Sidebar = () => {
             className={({ isActive }) => `side-nav-item ${isActive ? 'active' : ''}`}
           >
             {item.icon} {item.label}
-            {item.badge && <span className="badge-dot">{item.badge}</span>}
+            {item.badge > 0 && <span className="badge-dot">{item.badge}</span>}
           </NavLink>
         ))}
       </div>
@@ -100,14 +124,7 @@ const Sidebar = () => {
         </div>
       )}
 
-      {(activeMenu === 'admin' || activeMenu === 'host') && (
-        <div className="side-section">
-          <div className="side-section-label">Quick Links</div>
-          <NavLink to="/dashboard" className="side-nav-item">
-            {icons.browse} Back to User View
-          </NavLink>
-        </div>
-      )}
+
     </div>
   );
 };

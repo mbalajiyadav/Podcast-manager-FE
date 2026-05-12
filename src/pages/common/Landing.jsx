@@ -2,59 +2,49 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Landing.css';
 
+import { podcastService } from '../../services/podcastService';
+import { adminService } from '../../services/adminService';
+
 const Landing = () => {
-  // Mock data states - these can be easily replaced by API calls later
   const [stats, setStats] = useState({
-    episodes: '2.4k+',
-    hosts: '180+',
-    listeners: '12k+'
+    episodes: '0',
+    hosts: '0',
+    listeners: '0'
   });
 
   const [categories, setCategories] = useState([
-    { id: 1, name: 'Music & DJ Mixes', count: '312 episodes', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> },
-    { id: 2, name: 'News & Affairs', count: '198 episodes', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg> },
-    { id: 3, name: 'Business', count: '245 episodes', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> },
-    { id: 4, name: 'Health & Wellness', count: '167 episodes', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> }
+    { id: 1, name: 'Music & DJ Mixes', count: '...', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> },
+    { id: 2, name: 'News & Affairs', count: '...', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg> },
+    { id: 3, name: 'Business', count: '...', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> },
+    { id: 4, name: 'Health & Wellness', count: '...', icon: <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> }
   ]);
 
-  const [trendingEpisodes, setTrendingEpisodes] = useState([
-    { 
-      id: 1, 
-      category: 'True Crime', 
-      title: 'The Vanishing of Room 12', 
-      host: 'Priya Menon', 
-      plays: '8.2k',
-      artColor: '#713600'
-    },
-    { 
-      id: 2, 
-      category: 'Self-improvement', 
-      title: 'Morning Rituals That Work', 
-      host: 'Ravi Krishnan', 
-      plays: '6.7k',
-      artColor: '#38240D'
-    },
-    { 
-      id: 3, 
-      category: 'Comedy', 
-      title: 'Totally Unscripted Ep. 9', 
-      host: 'Meera & Zaid', 
-      plays: '5.1k',
-      artColor: 'rgba(113, 54, 0, 0.5)'
-    }
-  ]);
+  const [trendingEpisodes, setTrendingEpisodes] = useState([]);
 
-  // Simulate API fetch on component mount
   useEffect(() => {
-    // This is where you would call your API
-    // const fetchData = async () => {
-    //   const response = await fetch('/api/landing-data');
-    //   const data = await response.json();
-    //   setStats(data.stats);
-    //   setCategories(data.categories);
-    //   setTrendingEpisodes(data.trending);
-    // };
-    // fetchData();
+    const fetchLandingData = async () => {
+      try {
+        const statsData = await adminService.getPlatformStats();
+        setStats({
+          episodes: `${statsData.totalEpisodes}+`,
+          hosts: `${statsData.activeHosts}+`,
+          listeners: `${statsData.listeners}+`
+        });
+
+        const podcasts = await podcastService.searchPodcasts('');
+        setTrendingEpisodes(podcasts.slice(0, 3).map(p => ({
+          id: p.id,
+          category: p.category,
+          title: p.title,
+          host: p.author,
+          plays: p.playCount.toLocaleString(),
+          artColor: '#713600'
+        })));
+      } catch (error) {
+        console.error('Error fetching landing data:', error);
+      }
+    };
+    fetchLandingData();
   }, []);
 
   return (

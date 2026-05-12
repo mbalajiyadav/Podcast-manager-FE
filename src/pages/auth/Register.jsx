@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './Auth.css';
 
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { authService } from '../../services/authService';
+import { setCredentials } from '../../features/auth/authSlice';
+
 const Register = () => {
-  const [role, setRole] = useState('listener'); // 'listener' or 'host'
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [role, setRole] = useState('LISTENER'); // 'LISTENER' or 'HOST'
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: ''
   });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,9 +26,44 @@ const Register = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Register attempt:', { role, ...formData });
+    setIsLoading(true);
+    setError('');
+
+    const nameParts = formData.fullName.trim().split(' ');
+    const first_name = nameParts[0];
+    const last_name = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
+
+    try {
+      const data = await authService.register({
+        first_name,
+        last_name,
+        email_id: formData.email,
+        password: formData.password,
+        role_code: role
+      });
+
+      dispatch(setCredentials({
+        user: {
+          id: data._id,
+          name: `${data.first_name} ${data.last_name}`,
+          email: data.email_id,
+          role: data.role
+        },
+        token: data.token,
+        refreshToken: data.token
+      }));
+
+      // Redirect based on role
+      if (data.role === 'ADMIN') navigate('/admin/dashboard');
+      else if (data.role === 'HOST') navigate('/host/dashboard');
+      else navigate('/dashboard');
+    } catch (err) {
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -46,20 +90,22 @@ const Register = () => {
             
             <div className="role-row">
               <div 
-                className={`role-opt ${role === 'listener' ? 'active' : ''}`}
-                onClick={() => setRole('listener')}
+                className={`role-opt ${role === 'LISTENER' ? 'active' : ''}`}
+                onClick={() => setRole('LISTENER')}
               >
                 <div style={{ fontSize: '24px', marginBottom: '8px' }}>🎧</div>
                 <span>Listener</span>
               </div>
               <div 
-                className={`role-opt ${role === 'host' ? 'active' : ''}`}
-                onClick={() => setRole('host')}
+                className={`role-opt ${role === 'HOST' ? 'active' : ''}`}
+                onClick={() => setRole('HOST')}
               >
                 <div style={{ fontSize: '24px', marginBottom: '8px' }}>🎙️</div>
                 <span>Host</span>
               </div>
             </div>
+
+            {error && <div className="auth-error" style={{ color: '#ff4d4d', marginBottom: '16px', fontSize: '14px', textAlign: 'center' }}>{error}</div>}
             
             <form onSubmit={handleSubmit}>
               <div className="field">
@@ -71,6 +117,7 @@ const Register = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   required 
+                  disabled={isLoading}
                 />
               </div>
               
@@ -83,6 +130,7 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required 
+                  disabled={isLoading}
                 />
               </div>
               
@@ -95,10 +143,13 @@ const Register = () => {
                   value={formData.password}
                   onChange={handleChange}
                   required 
+                  disabled={isLoading}
                 />
               </div>
               
-              <button type="submit" className="btn-full">Create account</button>
+              <button type="submit" className="btn-full" disabled={isLoading}>
+                {isLoading ? 'Creating account...' : 'Create account'}
+              </button>
             </form>
             
             <div className="switch-link">

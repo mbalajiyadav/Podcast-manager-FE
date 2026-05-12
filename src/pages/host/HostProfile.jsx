@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { hostService } from '../../services/hostService';
+import { logout } from '../../features/auth/authSlice';
 import './HostProfile.css';
 
 const HostProfile = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState(null);
   const [episodes, setEpisodes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Episodes');
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login');
+  };
+
   const icons = {
 
     edit: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>,
+    logout: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
     location: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>,
     business: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
     link: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>,
@@ -24,12 +35,12 @@ const HostProfile = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [profileData, episodesData] = await Promise.all([
-          hostService.getHostProfile(),
-          hostService.getHostEpisodes()
-        ]);
-        setProfile(profileData);
-        setEpisodes(episodesData);
+        const profileData = await hostService.getHostProfile();
+        if (profileData) {
+          setProfile(profileData);
+          const episodesData = await hostService.getHostEpisodes();
+          setEpisodes(episodesData);
+        }
       } catch (error) {
         console.error("Error fetching profile data:", error);
       } finally {
@@ -48,8 +59,8 @@ const HostProfile = () => {
       <div className="profile-banner">
         <div className="profile-banner-inner">
           <div className="profile-actions">
-
             <button className="btn-edit"><i>{icons.edit}</i> Edit profile</button>
+            <button className="btn-edit logout" style={{ marginLeft: '12px', background: '#ff4d4d1a', color: '#ff4d4d' }} onClick={handleLogout}><i>{icons.logout}</i> Log out</button>
           </div>
         </div>
       </div>

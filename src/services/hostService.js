@@ -1,165 +1,205 @@
-/**
- * Mock Service for Host Dashboard Data
- */
+import api from './axiosInstance';
 
 export const hostService = {
   /**
    * Get dashboard statistics for the host
    */
   getDashboardStats: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          totalEpisodes: 43,
-          episodesThisMonth: 2,
-          totalPlays: '62.4k',
-          playsGrowth: '18%',
-          pendingReview: 2,
-          approvedEpisodes: 40
-        });
-      }, 500);
-    });
+    try {
+      const response = await api.get('/episodes/my');
+      const episodes = response.data;
+      
+      const totalEpisodes = episodes.length;
+      const approvedEpisodes = episodes.filter(ep => ep.approval_status_id?.approval_code === 'APPROVED').length;
+      const pendingReview = episodes.filter(ep => ep.approval_status_id?.approval_code === 'PENDING').length;
+      const totalPlaysCount = episodes.reduce((acc, ep) => acc + (ep.views_count || 0), 0);
+
+      return {
+        totalEpisodes,
+        episodesThisMonth: episodes.filter(ep => {
+          const date = new Date(ep.created_on);
+          const now = new Date();
+          return date.getMonth() === now.getMonth() && date.getFullYear() === now.getFullYear();
+        }).length,
+        totalPlays: totalPlaysCount.toLocaleString(),
+        playsGrowth: '0%', // Mock growth for now
+        pendingReview,
+        approvedEpisodes
+      };
+    } catch (error) {
+      console.error('Error fetching host dashboard stats:', error);
+      return { totalEpisodes: 0, episodesThisMonth: 0, totalPlays: '0', playsGrowth: '0%', pendingReview: 0, approvedEpisodes: 0 };
+    }
   },
 
   /**
    * Get recent episodes for the host
    */
   getRecentEpisodes: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          {
-            id: 101,
-            title: 'The Startup Grind #43',
-            category: 'Business',
-            uploadDate: 'May 9, 2026',
-            plays: 320,
-            status: 'pending'
-          },
-          {
-            id: 102,
-            title: 'Fundraising 101 — Ep. 42',
-            category: 'Business',
-            uploadDate: 'Apr 28, 2026',
-            plays: '3,120',
-            status: 'approved'
-          },
-          {
-            id: 103,
-            title: 'Pitch Perfect — Ep. 41',
-            category: 'Business',
-            uploadDate: 'Apr 15, 2026',
-            plays: '4,880',
-            status: 'approved'
-          },
-          {
-            id: 104,
-            title: 'Low effort promo cut',
-            category: 'Business',
-            uploadDate: 'Apr 3, 2026',
-            plays: 0,
-            status: 'rejected'
-          },
-          {
-            id: 105,
-            title: 'Building the MVP — Ep. 40',
-            category: 'Business',
-            uploadDate: 'Mar 20, 2026',
-            plays: '7,200',
-            status: 'approved'
-          }
-        ]);
-      }, 500);
-    });
+    try {
+      const response = await api.get('/episodes/my');
+      return response.data.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        category: ep.content_type_id?.type_description || 'Podcast',
+        uploadDate: new Date(ep.created_on).toLocaleDateString(),
+        plays: ep.views_count || 0,
+        status: ep.approval_status_id?.approval_code?.toLowerCase() || 'pending'
+      }));
+    } catch (error) {
+      console.error('Error fetching recent episodes:', error);
+      return [];
+    }
   },
 
   /**
-   * Simulate file upload with progress
+   * Upload a file to S3
    */
   uploadFile: async (file, onProgress) => {
-    return new Promise((resolve) => {
-      let progress = 0;
-      const interval = setInterval(() => {
-        progress += 10;
-        if (onProgress) onProgress(progress);
-        if (progress >= 100) {
-          clearInterval(interval);
-          resolve({
-            url: `https://cdn.podcast.com/uploads/${file.name}`,
-            duration: '51 min',
-            format: file.type.split('/')[1].toUpperCase(),
-            size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`
-          });
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await api.post('/upload/audio', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          onProgress(percentCompleted);
         }
-      }, 300);
-    });
+      });
+
+      return {
+        url: response.data.url,
+        key: response.data.key,
+        duration: 'Auto', // In a real app, you'd extract this from the file on frontend or backend
+        size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        format: file.type.split('/')[1]?.toUpperCase() || 'MP3'
+      };
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
   },
 
   /**
-   * Submit the episode form (using FormData for multer compatibility)
+   * Submit the episode form
    */
-  submitEpisode: async (formData) => {
-    // In real app: return axiosInstance.post('/episodes', formData)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, message: 'Episode submitted for review' });
-      }, 1000);
-    });
+  submitEpisode: async (submissionData) => {
+    try {
+      // submissionData is a FormData object from the component
+      // We convert it to a regular object if the backend expects JSON
+      const data = {
+        title: submissionData.get('title'),
+        description: submissionData.get('description'),
+        category_name: submissionData.get('category'),
+        audio_s3_key: submissionData.get('audio_s3_key'), // The key returned from uploadFile
+        duration_in_seconds: 300 // Placeholder or extracted duration
+      };
+
+      const response = await api.post('/episodes', data);
+      return { success: true, message: 'Episode submitted successfully for review!' };
+    } catch (error) {
+      console.error('Error submitting episode:', error);
+      return { success: false, message: error.response?.data?.message || 'Failed to submit episode' };
+    }
   },
 
   /**
    * Get channel info
    */
   getChannelInfo: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          name: 'The Startup Grind',
-          episodeCount: 43,
+    try {
+      const response = await api.get('/channels/my');
+      const channels = response.data;
+      if (channels.length > 0) {
+        const channel = channels[0]; // Assuming one channel per host for now
+        return {
+          id: channel._id,
+          name: channel.name,
+          episodeCount: 0, // Need aggregation
           role: 'Host'
-        });
-      }, 300);
-    });
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error('Error fetching channel info:', error);
+      return null;
+    }
   },
 
   /**
    * Get host profile data
    */
   getHostProfile: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          name: 'Arjun Sharma',
-          handle: '@arjun',
-          since: 'Jan 2026',
-          bio: 'Founder, investor, and storyteller. I run The Startup Grind — a weekly podcast about the realities of building companies in India and beyond. No fluff, just honest conversations.',
-          location: 'Bangalore, India',
-          category: 'Business',
-          website: 'startupgrind.in',
-          initials: 'AS',
-          stats: {
-            episodes: { total: 43, live: 40, pending: 2, rejected: 1 },
-            plays: { total: '62.4k', growth: '18%' },
-            followers: { total: '1,240', growth: '84' },
-            avgDuration: '48 min'
-          }
-        });
-      }, 500);
-    });
+    try {
+      const userRes = await api.get('/auth/me');
+      const user = userRes.data;
+      
+      let channel = {};
+      try {
+        const channelRes = await api.get('/channels/my');
+        channel = channelRes.data[0] || {};
+      } catch (e) {
+        console.warn("Could not fetch channel, using defaults");
+      }
+
+      let episodes = [];
+      try {
+        const episodesRes = await api.get('/episodes/my');
+        episodes = episodesRes.data || [];
+      } catch (e) {
+        console.warn("Could not fetch episodes, using defaults");
+      }
+
+      return {
+        name: `${user.first_name} ${user.last_name}`,
+        handle: `@${user.first_name.toLowerCase()}`,
+        since: 'May 2026',
+        bio: channel.description || 'Podcast host.',
+        location: user.location || 'India',
+        category: channel.category_id?.type_description || 'Various',
+        website: 'mysite.com',
+        initials: `${user.first_name.charAt(0)}${user.last_name.charAt(0)}`,
+        stats: {
+          episodes: { 
+            total: episodes.length, 
+            live: episodes.filter(e => e.approval_status_id?.approval_code === 'APPROVED').length,
+            pending: episodes.filter(e => e.approval_status_id?.approval_code === 'PENDING').length,
+            rejected: episodes.filter(e => e.approval_status_id?.approval_code === 'REJECTED').length 
+          },
+          plays: { 
+            total: episodes.reduce((acc, e) => acc + (e.views_count || 0), 0).toLocaleString(),
+            growth: '0%' 
+          },
+          followers: { total: '0', growth: '0' },
+          avgDuration: '45 min'
+        }
+      };
+    } catch (error) {
+      console.error('Error fetching host profile:', error);
+      return null;
+    }
   },
 
   /**
    * Get host episodes for profile grid
    */
   getHostEpisodes: async () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve([
-          { id: 1, title: 'The Startup Grind #43 — Fundraising 101', category: 'Business', plays: '3.1k', status: 'Approved', artClass: 'a2' },
-          { id: 2, title: 'The Startup Grind #44 — Product-Market Fit', category: 'Business', plays: '0', status: 'Pending', artClass: 'a1' },
-          { id: 3, title: 'Building the MVP — Ep. 40', category: 'Business', plays: '7.2k', status: 'Approved', artClass: 'a3' }
-        ]);
-      }, 500);
-    });
+    try {
+      const response = await api.get('/episodes/my');
+      return response.data.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        category: ep.content_type_id?.type_description || 'Podcast',
+        plays: ep.views_count?.toLocaleString() || '0',
+        status: ep.approval_status_id?.approval_code === 'APPROVED' ? 'Approved' : 'Pending',
+        artClass: 'a1'
+      }));
+    } catch (error) {
+      console.error('Error fetching host episodes:', error);
+      return [];
+    }
   }
 };
