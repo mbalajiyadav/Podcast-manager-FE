@@ -44,13 +44,20 @@ const UploadEpisode = () => {
     setUploadStatus('uploading');
     setUploadProgress(0);
 
-    const result = await hostService.uploadFile(file, (progress) => {
-      setUploadProgress(progress);
-    });
+    try {
+      const result = await hostService.uploadFile(file, (progress) => {
+        setUploadProgress(progress);
+      });
 
-    setFileMetadata(result);
-    setUploadStatus('completed');
-    setFormData(prev => ({ ...prev, duration: `${result.duration} (auto-detected)` }));
+      setFileMetadata(result);
+      setUploadStatus('completed');
+      setFormData(prev => ({ ...prev, duration: `${result.duration} (auto-detected)` }));
+    } catch (error) {
+      console.error("Upload failed", error);
+      alert("Upload failed: " + (error.response?.data?.message || error.message));
+      setUploadStatus('idle');
+      setUploadProgress(0);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -205,7 +212,7 @@ const UploadEpisode = () => {
             <div className="afc-meta">
               <div className="afc-meta-item"><i>{icons.clock}</i> {fileMetadata ? fileMetadata.duration : '-- min'}</div>
               <div className="afc-meta-item"><i>{icons.file}</i> {fileMetadata ? fileMetadata.format : '---'}</div>
-              <div className="afc-meta-item"><i>{icons.cloudCheck}</i> Cloudinary</div>
+              <div className="afc-meta-item"><i>{icons.cloudCheck}</i> Amazon S3</div>
             </div>
           </div>
         </div>
