@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from './axiosInstance';
 
 export const hostService = {
@@ -53,28 +54,37 @@ export const hostService = {
   },
 
   /**
-   * Upload a file to S3
+   * Upload file directly to S3 using a Pre-signed URL
+   * This bypasses Vercel's 4.5MB limit.
    */
-  uploadFile: async (file, onProgress) => {
+  async uploadFile(file, onProgress) {
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      const response = await api.post('/upload/audio', formData, {
+      // 1. Get the pre-signed URL from our backend
+      const { data: ticket } = await api.get('/upload/presigned', {
+        params: {
+          fileName: file.name,
+          fileType: file.type
+        }
+      });
+
+      // 2. Upload directly to S3 using the ticket
+      // We use a clean axios instance to avoid sending our JWT to S3
+      await axios.put(ticket.uploadUrl, file, {
         headers: {
-          'Content-Type': 'multipart/form-data'
+          'Content-Type': file.type
         },
         onUploadProgress: (progressEvent) => {
-          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-          onProgress(percentCompleted);
+          if (onProgress) {
+            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+            onProgress(percentCompleted);
+          }
         }
       });
 
       return {
-        url: response.data.url,
-        key: response.data.key,
-        duration: 'Auto', // In a real app, you'd extract this from the file on frontend or backend
-        size: `${(file.size / (1024 * 1024)).toFixed(1)} MB`,
+        audio_s3_key: ticket.key,
+        url: ticket.publicUrl,
+        duration: 300, // Placeholder
         format: file.type.split('/')[1]?.toUpperCase() || 'MP3'
       };
     } catch (error) {
