@@ -1,50 +1,62 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { incrementPlayCount } from '../../features/playlist/playlistSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { 
+  selectCurrentEpisode, 
+  selectIsPlaying, 
+  setPlaying,
+  togglePlay as toggleReduxPlay
+} from '../../features/player/playerSlice';
+import { episodeService } from '../../services/episodeService';
 
 const PlayerBar = () => {
   const dispatch = useDispatch();
+  const currentEpisode = useSelector(selectCurrentEpisode);
+  const isPlaying = useSelector(selectIsPlaying);
+  
   const audioRef = useRef(null);
   const hasCountedPlay = useRef(false);
   const totalListenedTime = useRef(0);
   const lastTimestamp = useRef(0);
   
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Mock current podcast ID
-  const currentPodcastId = '1'; 
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(e => console.log("Play interrupted"));
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying, currentEpisode]);
 
   useEffect(() => {
-    // Reset flags when podcast changes
+    // Reset tracking when episode changes
     hasCountedPlay.current = false;
     totalListenedTime.current = 0;
     lastTimestamp.current = 0;
-  }, [currentPodcastId]);
+  }, [currentEpisode?.id]);
+
+  if (!currentEpisode) return null;
 
   const handleTimeUpdate = () => {
     if (!audioRef.current) return;
-
     const time = audioRef.current.currentTime;
     setCurrentTime(time);
 
     if (!hasCountedPlay.current) {
       const diff = time - lastTimestamp.current;
-
-      // Only count if the time difference is small (e.g., < 1s) to avoid counting scrubs
       if (diff > 0 && diff < 1) {
         totalListenedTime.current += diff;
       }
 
       if (totalListenedTime.current >= 30) {
         hasCountedPlay.current = true;
-        dispatch(incrementPlayCount(currentPodcastId));
-        // TODO: call podcastService.recordPlay(currentPodcastId) when API is ready
-        console.log(`Play counted for podcast ${currentPodcastId}`);
+        episodeService.incrementPlayCount(currentEpisode.id);
+        console.log(`Play counted for episode ${currentEpisode.id}`);
       }
     }
-
     lastTimestamp.current = time;
   };
 
@@ -55,14 +67,7 @@ const PlayerBar = () => {
   };
 
   const togglePlay = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
+    dispatch(toggleReduxPlay());
   };
 
   const formatTime = (time) => {
@@ -84,13 +89,15 @@ const PlayerBar = () => {
     <div className="b-player-bar">
       <audio 
         ref={audioRef}
-        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" // Sample audio
+        src={currentEpisode.audioUrl}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
+        onEnded={() => dispatch(setPlaying(false))}
+        autoPlay
       />
       <div className="pb-info">
-        <div className="pb-title">The Vanishing of Room 12</div>
-        <div className="pb-host">Priya Menon</div>
+        <div className="pb-title">{currentEpisode.title}</div>
+        <div className="pb-host">{currentEpisode.host}</div>
       </div>
       <div className="pb-progress">
         <div className="pb-bar">

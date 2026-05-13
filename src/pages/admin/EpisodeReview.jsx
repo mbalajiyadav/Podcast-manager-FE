@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { adminService } from '../../services/adminService';
+import { useDispatch } from 'react-redux';
+import { setCurrentEpisode } from '../../features/player/playerSlice';
 import './EpisodeReview.css';
 
 const EpisodeReview = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -43,6 +46,17 @@ const EpisodeReview = () => {
     };
     fetchReviewData();
   }, [id]);
+
+  const handlePreview = () => {
+    if (!data) return;
+    dispatch(setCurrentEpisode({
+      id: id,
+      title: data.title,
+      host: data.host,
+      audioUrl: data.audioUrl,
+      imageUrl: data.imageUrl || 'https://via.placeholder.com/200'
+    }));
+  };
 
   const handleApprove = async () => {
     await adminService.updateEpisodeStatus(id, 'approved');
@@ -92,36 +106,20 @@ const EpisodeReview = () => {
           </div>
 
           <div className="player-card">
-            <div className="progress-track">
-              <div className="progress-thumb" style={{ width: '38%' }}></div>
-            </div>
-            <div className="time-row">
-              <span>18:22</span>
-              <span>{data.duration}:00</span>
-            </div>
-            <div className="controls">
-              <div className="ctrl">{icons.skipBack}</div>
-              <div className="ctrl">{icons.rewind10}</div>
-              <div className="ctrl-play">{icons.pause}</div>
-              <div className="ctrl">{icons.forward10}</div>
-              <div className="ctrl">{icons.skipForward}</div>
-            </div>
-            <div className="player-extras">
-              <div className="vol-row">
-                <i>{icons.volume}</i>
-                <div className="vol-bar"><div className="vol-fill"></div></div>
-              </div>
-              <button className="speed-btn">1.0×</button>
+            <div className="admin-player-notice">
+               <p>Preview this episode using the global player below.</p>
+               <button className="btn-preview-main" onClick={handlePreview}>
+                 <i>{icons.play}</i> Start Preview
+               </button>
             </div>
           </div>
 
           <div className="action-row">
-            <button className="btn-preview"><i>{icons.play}</i> Preview audio</button>
             <button className="btn-approve" onClick={handleApprove}>
-              <i>{icons.approve}</i> Approve
+              <i>{icons.approve}</i> Approve Episode
             </button>
             <button className="btn-reject" onClick={() => setShowRejectModal(true)}>
-              <i>{icons.reject}</i> Reject
+              <i>{icons.reject}</i> Reject Episode
             </button>
           </div>
 
@@ -156,15 +154,19 @@ const EpisodeReview = () => {
 
           <div className="more-title">Other episodes by host</div>
           <div className="more-list">
-            {data.otherEpisodes.map(ep => (
-              <div key={ep.id} className="more-item">
-                <div className="more-art"><i>{icons.mic}</i></div>
-                <div className="more-info">
-                  <div className="more-ep-title">{ep.title}</div>
-                  <div className="more-ep-host">{ep.duration} · {ep.status}</div>
+            {data.otherEpisodes.length > 0 ? (
+              data.otherEpisodes.map(ep => (
+                <div key={ep.id} className="more-item">
+                  <div className="more-art"><i>{icons.mic}</i></div>
+                  <div className="more-info">
+                    <div className="more-ep-title">{ep.title}</div>
+                    <div className="more-ep-host">{ep.duration} · {ep.status}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <div className="no-others">No previous uploads found.</div>
+            )}
           </div>
         </div>
       </div>

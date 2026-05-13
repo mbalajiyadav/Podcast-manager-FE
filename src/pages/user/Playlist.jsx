@@ -8,6 +8,12 @@ import {
   selectPlaylistItems,
   selectActiveCategory 
 } from '../../features/playlist/playlistSlice';
+import { 
+  selectCurrentEpisode, 
+  selectIsPlaying, 
+  setCurrentEpisode,
+  togglePlay as toggleReduxPlay 
+} from '../../features/player/playerSlice';
 import PlaylistFilters from '../../components/playlist/PlaylistFilters';
 import './Playlist.css';
 
@@ -18,6 +24,8 @@ const Playlist = () => {
   const allEpisodes = useSelector(selectPlaylistItems);
   const filteredEpisodes = useSelector(selectFilteredPlaylist);
   const activeCategory = useSelector(selectActiveCategory);
+  const currentEpisode = useSelector(selectCurrentEpisode);
+  const isPlaying = useSelector(selectIsPlaying);
   
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({ totalCount: 0, totalDuration: '' });
@@ -102,10 +110,10 @@ const Playlist = () => {
         {filteredEpisodes.map((ep, index) => (
           <div 
             key={ep.id} 
-            className={`pl-item ${ep.isCurrentlyPlaying ? 'active' : ''}`}
+            className={`pl-item ${ep.id === currentEpisode?.id ? 'active' : ''}`}
           >
             <div className="pl-num">
-              {ep.isCurrentlyPlaying ? (
+              {ep.id === currentEpisode?.id ? (
                 <i className="playing-icon">{icons.play}</i>
               ) : (
                 index + 1
@@ -129,11 +137,11 @@ const Playlist = () => {
             </div>
 
             <div className="pl-meta">
-              {ep.isCurrentlyPlaying && (
+              {ep.id === currentEpisode?.id && (
                 <div className="currently-badge">Now playing</div>
               )}
               <div className="pl-dur">{ep.duration}</div>
-              {!ep.isCurrentlyPlaying && (
+              {ep.id !== currentEpisode?.id && (
                 <div className="pl-plays">{ep.plays} plays</div>
               )}
               <div className="pl-btns">
@@ -143,8 +151,23 @@ const Playlist = () => {
                 >
                   {icons.trash}
                 </button>
-                <button className="pl-play">
-                  {ep.isCurrentlyPlaying ? 'Pause' : 'Play'}
+                <button 
+                  className="pl-play"
+                  onClick={() => {
+                    if (ep.id === currentEpisode?.id) {
+                      dispatch(toggleReduxPlay());
+                    } else {
+                      dispatch(setCurrentEpisode({
+                        id: ep.id,
+                        title: ep.title,
+                        host: ep.host,
+                        audioUrl: ep.audioUrl || `https://${process.env.VITE_AWS_BUCKET_NAME || 'podcast-manager-balaji'}.s3.ap-southeast-2.amazonaws.com/${ep.audio_s3_key}`,
+                        imageUrl: ep.imageUrl
+                      }));
+                    }
+                  }}
+                >
+                  {ep.id === currentEpisode?.id && isPlaying ? 'Pause' : 'Play'}
                 </button>
               </div>
             </div>

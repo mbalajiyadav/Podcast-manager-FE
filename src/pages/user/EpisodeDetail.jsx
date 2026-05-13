@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { episodeService } from '../../services/episodeService';
 import { playlistService } from '../../services/playlistService';
+import { useDispatch } from 'react-redux';
+import { setCurrentEpisode } from '../../features/player/playerSlice';
 import './EpisodeDetail.css';
 
 const EpisodeDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState(null);
   const [moreFromHost, setMoreFromHost] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -41,6 +44,7 @@ const EpisodeDetail = () => {
           if (detailData.channelId) {
              const moreData = await episodeService.getMoreFromHost(detailData.channelId);
              setMoreFromHost(moreData);
+             setIsFollowing(detailData.isFollowing || false);
           }
         }
       } catch (error) {
@@ -53,9 +57,10 @@ const EpisodeDetail = () => {
   }, [id]);
 
   const handleFollow = async () => {
-    const result = await episodeService.toggleFollowHost('host-1');
+    if (!data.channelId) return;
+    const result = await episodeService.toggleFollowHost(data.channelId);
     if (result.success) {
-      setIsFollowing(true);
+      setIsFollowing(result.isFollowing);
     }
   };
 
@@ -71,35 +76,60 @@ const EpisodeDetail = () => {
 
       <div className="ep-detail-content">
         <div className="ep-main">
-          <div className="ep-hero">
-            <div className="ep-cover">
-              {data.imageUrl ? (
-                <img src={data.imageUrl} alt={data.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              ) : (
-                <i>{icons.mic}</i>
-              )}
-            </div>
-            <div className="ep-meta">
-              <div className="ep-cat">{data.category}</div>
-              <h1 className="ep-title">{data.title || 'Untitled Episode'}</h1>
-              <div className="ep-byline">
-                <div className="ep-host-avatar">{data.hostAvatar}</div>
-                <div className="ep-host-name">{data.host || 'Unknown Host'}</div>
+          <div className="ep-header-section">
+            <div className="ep-hero">
+              <div className="ep-cover">
+                {data.imageUrl ? (
+                  <img src={data.imageUrl} alt={data.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  <i>{icons.mic}</i>
+                )}
               </div>
-              <div className="ep-stats">
-                <div className="ep-stat"><i>{icons.play}</i> {data.plays} plays</div>
-                <div className="ep-stat"><i>{icons.clock}</i> {data.duration}</div>
-                <div className="ep-stat"><i>{icons.calendar}</i> {data.date}</div>
+              <div className="ep-hero-info">
+                <div className="ep-cat">{data.category}</div>
+                <h1 className="ep-main-title">{data.title || 'Untitled Episode'}</h1>
+                <div className="ep-byline">
+                  <div className="ep-host-avatar">{data.hostAvatar}</div>
+                  <div className="ep-host-name">{data.host || 'Unknown Host'}</div>
+                </div>
+                <div className="ep-stats">
+                  <div className="ep-stat"><i>{icons.play}</i> {data.plays} plays</div>
+                  <div className="ep-stat"><i>{icons.clock}</i> {data.duration}</div>
+                  <div className="ep-stat"><i>{icons.calendar}</i> {data.date}</div>
+                </div>
               </div>
             </div>
           </div>
           <div className="player-card">
-            <audio 
-              src={data.audioUrl} 
-              controls 
-              style={{ width: '100%', borderRadius: '12px', background: '#2d1a0a' }}
-              onPlay={() => episodeService.incrementPlayCount(id)}
-            />
+             <button 
+               className="main-play-btn" 
+               style={{ 
+                 width: '100%', 
+                 padding: '16px', 
+                 borderRadius: '12px', 
+                 background: '#C05800', 
+                 color: 'white', 
+                 border: 'none', 
+                 fontSize: '18px', 
+                 fontWeight: 'bold',
+                 cursor: 'pointer',
+                 display: 'flex',
+                 alignItems: 'center',
+                 justifyContent: 'center',
+                 gap: '12px'
+               }}
+               onClick={() => {
+                 dispatch(setCurrentEpisode({
+                   id: id,
+                   title: data.title,
+                   host: data.host,
+                   audioUrl: data.audioUrl,
+                   imageUrl: data.imageUrl
+                 }));
+               }}
+             >
+               <i style={{ display: 'flex' }}>{icons.play}</i> Play Episode
+             </button>
           </div>
 
           <div className="ep-actions">

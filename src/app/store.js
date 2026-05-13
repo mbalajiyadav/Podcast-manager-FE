@@ -9,12 +9,14 @@ import authReducer from '../features/auth/authSlice'
 import masterReducer from '../features/master/masterSlice'
 import searchReducer from '../features/search/searchSlice'
 import playlistReducer from '../features/playlist/playlistSlice'
+import playerReducer from '../features/player/playerSlice'
 
 const rootReducer = combineReducers({
   auth: authReducer,
   master: masterReducer,
   search: searchReducer,
   playlist: playlistReducer,
+  player: playerReducer,
 })
 
 const persistedReducer = persistReducer({

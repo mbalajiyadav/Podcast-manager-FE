@@ -93,6 +93,35 @@ export const adminService = {
       const response = await api.get(`/episodes/${id}`);
       const ep = response.data;
       
+      // Fetch host stats separately
+      let hostStats = { totalEpisodes: 0, totalPlays: '0', approved: 0, rejected: 0 };
+      let otherEpisodes = [];
+
+      if (ep.user_id?._id) {
+        try {
+          const hostResponse = await api.get(`/users/${ep.user_id._id}`);
+          const hostData = hostResponse.data;
+          if (hostData.stats) {
+            hostStats = {
+              totalEpisodes: hostData.stats.totalEpisodes,
+              totalPlays: hostData.stats.totalPlays.toLocaleString(),
+              approved: hostData.stats.approved,
+              rejected: hostData.stats.rejected
+            };
+          }
+          if (hostData.recentEpisodes) {
+            otherEpisodes = hostData.recentEpisodes.map(e => ({
+              id: e.id,
+              title: e.title,
+              duration: e.duration,
+              status: e.status
+            }));
+          }
+        } catch (err) {
+          console.error("Could not fetch host stats", err);
+        }
+      }
+
       return {
         id: ep._id,
         title: ep.title,
@@ -101,16 +130,11 @@ export const adminService = {
         category: ep.content_type_id?.type_description || 'Podcast',
         duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
         submittedAt: new Date(ep.created_on).toLocaleDateString(),
-        fileInfo: `MP3 · ${(ep.duration_in_seconds * 0.1).toFixed(1)} MB`, // Rough estimate
+        fileInfo: `MP3 · ${(ep.duration_in_seconds * 0.1).toFixed(1)} MB`,
         description: ep.description,
-        audioUrl: ep.content_url || ep.audio_s3_key,
-        hostStats: {
-          totalEpisodes: 0,
-          totalPlays: '0',
-          approved: 0,
-          rejected: 0
-        },
-        otherEpisodes: []
+        audioUrl: ep.playback_url || ep.content_url,
+        hostStats: hostStats,
+        otherEpisodes: otherEpisodes
       };
     } catch (error) {
       console.error(`Error fetching review data for ${id}:`, error);

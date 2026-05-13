@@ -35,22 +35,34 @@
   min-width: 0;
 }
 
+.ep-header-section {
+  margin-bottom: 32px;
+}
+
 .ep-hero {
   display: flex;
-  gap: 24px;
-  margin-bottom: 32px;
-  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 24px;
 }
 
 .ep-cover {
-  width: 130px;
-  height: 130px;
-  border-radius: 16px;
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
   background: var(--b-dark);
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.ep-main-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--b-dark);
+  margin: 4px 0 10px;
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 .ep-cover i {
@@ -66,39 +78,31 @@
   margin-bottom: 10px;
 }
 
-.ep-title {
-  font-size: 24px;
-  font-weight: 800;
-  color: var(--b-dark);
-  margin-bottom: 12px;
-  line-height: 1.3;
-  word-break: break-word;
-}
-
 .ep-byline {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .ep-host-avatar {
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: var(--b-accent);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 10px;
   color: var(--b-bg);
   font-weight: 700;
 }
 
 .ep-host-name {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--b-dark);
-  font-weight: 600;
+  font-weight: 500;
+  opacity: 0.8;
 }
 
 .ep-stats {

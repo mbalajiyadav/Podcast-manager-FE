@@ -113,12 +113,15 @@ export const episodeService = {
   },
 
   /**
-   * Toggle follow host
+   * Toggle follow status for a host/channel
    */
-  toggleFollowHost: async (hostId) => {
-    // Backend doesn't have a follow system yet
-    return new Promise((resolve) => {
-      setTimeout(() => resolve({ success: true, following: true }), 300);
-    });
+  toggleFollowHost: async (channelId) => {
+    try {
+      const response = await api.post(`/users/follow/${channelId}`);
+      return { success: true, isFollowing: response.data.isFollowing };
+    } catch (error) {
+      console.error('Error toggling follow:', error);
+      return { success: false };
+    }
   }
 };

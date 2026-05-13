@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Browse.css';
-
+import { useDispatch } from 'react-redux';
+import { setCurrentEpisode } from '../../features/player/playerSlice';
+import { playlistService } from '../../services/playlistService';
 import { podcastService } from '../../services/podcastService';
+import './Browse.css';
 
 const Browse = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [featuredEpisodes, setFeaturedEpisodes] = useState([]);
   const [newArrivals, setNewArrivals] = useState([]);
   const [categories] = useState([
@@ -40,6 +43,27 @@ const Browse = () => {
     });
   };
 
+  const handlePlay = (e, ep) => {
+    e.stopPropagation();
+    dispatch(setCurrentEpisode({
+      id: ep.id,
+      title: ep.title,
+      host: ep.author,
+      audioUrl: ep.audioUrl,
+      imageUrl: ep.imageUrl
+    }));
+  };
+
+  const handleSave = async (e, ep) => {
+    e.stopPropagation();
+    try {
+      await playlistService.addToPlaylist(ep.id);
+      alert('Added to playlist!');
+    } catch (err) {
+      alert('Failed to save');
+    }
+  };
+
   const filteredFeatured = filterEpisodes(featuredEpisodes);
   const filteredNewArrivals = filterEpisodes(newArrivals);
   const hasResults = filteredFeatured.length > 0 || filteredNewArrivals.length > 0;
@@ -72,8 +96,8 @@ const Browse = () => {
         <div className="b-ep-footer">
           <div className="b-ep-plays">{icons.play} {ep.playCount || ep.plays || 0}</div>
           <div className="b-ep-actions">
-            <button className="b-ep-save" onClick={(e) => { e.stopPropagation(); /* save logic */ }}>{icons.bookmark}</button>
-            <button className="b-ep-play-btn">Play</button>
+            <button className="b-ep-save" onClick={(e) => handleSave(e, ep)}>{icons.bookmark}</button>
+            <button className="b-ep-play-btn" onClick={(e) => handlePlay(e, ep)}>Play</button>
           </div>
         </div>
       </div>
