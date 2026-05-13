@@ -34,6 +34,7 @@ const EpisodeDetail = () => {
       try {
         const detailData = await episodeService.getEpisodeDetails(id);
         if (detailData) {
+          console.log("AUDIO URL BEING USED:", detailData.audioUrl);
           setData(detailData);
           // Fetch more from the same channel
           if (detailData.channelId) {
