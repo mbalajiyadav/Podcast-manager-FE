@@ -80,10 +80,10 @@ const EpisodeDetail = () => {
             </div>
             <div className="ep-meta">
               <div className="ep-cat">{data.category}</div>
-              <h1 className="ep-title">{data.title}</h1>
+              <h1 className="ep-title">{data.title || 'Untitled Episode'}</h1>
               <div className="ep-byline">
                 <div className="ep-host-avatar">{data.hostAvatar}</div>
-                <div className="ep-host-name">{data.host}</div>
+                <div className="ep-host-name">{data.host || 'Unknown Host'}</div>
               </div>
               <div className="ep-stats">
                 <div className="ep-stat"><i>{icons.play}</i> {data.plays} plays</div>
@@ -94,29 +94,11 @@ const EpisodeDetail = () => {
           </div>
 
           <div className="player-card">
-            <div className="progress-wrap">
-              <div className="progress-track">
-                <div className="progress-thumb" style={{ width: '38%' }}></div>
-              </div>
-              <div className="time-row">
-                <span>14:02</span>
-                <span>{data.duration.split(' ')[0]}:00</span>
-              </div>
-            </div>
-            <div className="controls">
-              <div className="ctrl ctrl-sm">{icons.skipBack}</div>
-              <div className="ctrl ctrl-sm">{icons.rewind10}</div>
-              <div className="ctrl-play">{icons.pause}</div>
-              <div className="ctrl ctrl-sm">{icons.forward10}</div>
-              <div className="ctrl ctrl-sm">{icons.skipForward}</div>
-            </div>
-            <div className="player-extras">
-              <div className="vol-row">
-                <i>{icons.volume}</i>
-                <div className="vol-bar"><div className="vol-fill"></div></div>
-              </div>
-              <button className="speed-btn">1.0×</button>
-            </div>
+            <audio 
+              src={data.audioUrl} 
+              controls 
+              style={{ width: '100%', borderRadius: '12px', background: '#2d1a0a' }}
+            />
           </div>
 
           <div className="ep-actions">

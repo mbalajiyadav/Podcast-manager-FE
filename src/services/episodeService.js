@@ -12,19 +12,20 @@ export const episodeService = {
       return {
         id: ep._id,
         title: ep.title,
-        category: ep.content_type_id?.category_name || 'Podcast',
+        category: ep.content_type_id?.type_description || 'Podcast',
         host: ep.channel_id?.host_id ? `${ep.channel_id.host_id.first_name || ''} ${ep.channel_id.host_id.last_name || ''}`.trim() : 'Unknown Host',
         hostAvatar: ep.channel_id?.host_id?.first_name?.charAt(0) || 'H',
         plays: ep.views_count?.toLocaleString() || '0',
         duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
         date: new Date(ep.created_on).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         description: ep.description,
-        audioUrl: ep.content_url || ep.audio_s3_key,
-        imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key,
+        audioUrl: ep.audio_s3_key ? `https://${process.env.VITE_AWS_BUCKET_NAME || 'podcast-manager-balaji'}.s3.ap-southeast-2.amazonaws.com/${ep.audio_s3_key}` : ep.content_url,
+        imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key || 'https://via.placeholder.com/200',
         hostStats: {
-          episodeCount: 0, // In real app, might need extra call or aggregation
-          totalPlays: '0'
-        }
+          episodeCount: 1, // Will be updated by real logic later
+          totalPlays: ep.views_count?.toLocaleString() || '0'
+        },
+        hostId: ep.channel_id?.host_id?._id
       };
     } catch (error) {
       console.error(`Error fetching episode ${id}:`, error);
