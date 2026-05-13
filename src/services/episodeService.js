@@ -19,7 +19,7 @@ export const episodeService = {
         duration: `${Math.floor(ep.duration_in_seconds / 60)} min`,
         date: new Date(ep.created_on).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         description: ep.description,
-        audioUrl: ep.audio_s3_key ? `https://${process.env.VITE_AWS_BUCKET_NAME || 'podcast-manager-balaji'}.s3.ap-southeast-2.amazonaws.com/${ep.audio_s3_key}` : ep.content_url,
+        audioUrl: ep.playback_url || ep.content_url,
         imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key || 'https://via.placeholder.com/200',
         hostStats: {
           episodeCount: 1, 
