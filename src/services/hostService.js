@@ -9,7 +9,7 @@ export const hostService = {
     try {
       const response = await api.get('/episodes/my');
       const episodes = response.data;
-      
+
       const totalEpisodes = episodes.length;
       const approvedEpisodes = episodes.filter(ep => ep.approval_status_id?.approval_code === 'APPROVED').length;
       const pendingReview = episodes.filter(ep => ep.approval_status_id?.approval_code === 'PENDING').length;
@@ -98,15 +98,15 @@ export const hostService = {
    */
   submitEpisode: async (submissionData) => {
     try {
-      // submissionData is a FormData object from the component
-      // We convert it to a regular object if the backend expects JSON
-      const data = {
+      // If it's FormData, convert to plain object for the JSON API
+      const isFormData = submissionData instanceof FormData;
+      const data = isFormData ? {
         title: submissionData.get('title'),
         description: submissionData.get('description'),
         category_name: submissionData.get('category'),
-        audio_s3_key: submissionData.get('audio_s3_key'), // The key returned from uploadFile
-        duration_in_seconds: 300 // Placeholder or extracted duration
-      };
+        audio_s3_key: submissionData.get('audio_s3_key'),
+        duration_in_seconds: 300
+      } : submissionData;
 
       const response = await api.post('/episodes', data);
       return { success: true, message: 'Episode submitted successfully for review!' };
@@ -146,7 +146,7 @@ export const hostService = {
     try {
       const userRes = await api.get('/auth/me');
       const user = userRes.data;
-      
+
       let channel = {};
       try {
         const channelRes = await api.get('/channels/my');
@@ -173,15 +173,15 @@ export const hostService = {
         website: 'mysite.com',
         initials: `${user.first_name.charAt(0)}${user.last_name.charAt(0)}`,
         stats: {
-          episodes: { 
-            total: episodes.length, 
+          episodes: {
+            total: episodes.length,
             live: episodes.filter(e => e.approval_status_id?.approval_code === 'APPROVED').length,
             pending: episodes.filter(e => e.approval_status_id?.approval_code === 'PENDING').length,
-            rejected: episodes.filter(e => e.approval_status_id?.approval_code === 'REJECTED').length 
+            rejected: episodes.filter(e => e.approval_status_id?.approval_code === 'REJECTED').length
           },
-          plays: { 
+          plays: {
             total: episodes.reduce((acc, e) => acc + (e.views_count || 0), 0).toLocaleString(),
-            growth: '0%' 
+            growth: '0%'
           },
           followers: { total: '0', growth: '0' },
           avgDuration: '45 min'

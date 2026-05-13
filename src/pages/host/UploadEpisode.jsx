@@ -71,7 +71,7 @@ const UploadEpisode = () => {
     submissionData.append('title', formData.title);
     submissionData.append('description', formData.description);
     submissionData.append('category', formData.category);
-    submissionData.append('audio_s3_key', fileMetadata.key);
+    submissionData.append('audio_s3_key', fileMetadata.audio_s3_key);
 
     const result = await hostService.submitEpisode(submissionData);
     if (result.success) {
