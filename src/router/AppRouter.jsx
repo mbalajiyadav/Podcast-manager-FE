@@ -31,6 +31,8 @@ import SearchPage from '../pages/SearchPage'
 import NotFound from '../pages/common/NotFound'
 
 import MainLayout from '../components/layout/MainLayout'
+import PrivateRoute from './PrivateRoute'
+import RoleRoute from './RoleRoute'
 
 export default function AppRouter() {
   return (
@@ -43,29 +45,35 @@ export default function AppRouter() {
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Authenticated routes wrapped in MainLayout */}
-        <Route element={<MainLayout />}>
-          <Route path="/dashboard" element={<Browse />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/browse" element={<Browse />} />
-          <Route path="/playlist" element={<Playlist />} />
-          <Route path="/search" element={<SearchPage />} />
-          <Route path="/episode/:id" element={<EpisodeDetail />} />
+        <Route element={<PrivateRoute />}>
+          <Route element={<MainLayout />}>
+            <Route path="/dashboard" element={<Browse />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/browse" element={<Browse />} />
+            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/episode/:id" element={<EpisodeDetail />} />
 
-          {/* Host routes */}
-          <Route path="/host/dashboard" element={<HostDashboard />} />
-          <Route path="/host/listings" element={<Listings />} />
-          <Route path="/host/upload" element={<UploadEpisode />} />
-          <Route path="/host/profile" element={<HostProfile />} />
+            {/* Host routes */}
+            <Route element={<RoleRoute allowedRoles={['host', 'admin']} />}>
+              <Route path="/host/dashboard" element={<HostDashboard />} />
+              <Route path="/host/listings" element={<Listings />} />
+              <Route path="/host/upload" element={<UploadEpisode />} />
+              <Route path="/host/profile" element={<HostProfile />} />
+            </Route>
 
-          {/* Admin routes */}
-          <Route path="/admin/dashboard" element={<AdminPanel />} />
-          <Route path="/admin/users" element={<AdminUsers />} />
-          <Route path="/admin/episodes" element={<AdminEpisodes />} />
-          <Route path="/admin/stats" element={<StatsPage />} />
-          <Route path="/admin/review/:id" element={<EpisodeReview />} />
+            {/* Admin routes */}
+            <Route element={<RoleRoute allowedRoles={['admin']} />}>
+              <Route path="/admin/dashboard" element={<AdminPanel />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/episodes" element={<AdminEpisodes />} />
+              <Route path="/admin/stats" element={<StatsPage />} />
+              <Route path="/admin/review/:id" element={<EpisodeReview />} />
+            </Route>
 
-          {/* Shared routes */}
-          <Route path="/analytics" element={<Analytics />} />
+            {/* Shared routes */}
+            <Route path="/analytics" element={<Analytics />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />

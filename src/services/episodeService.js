@@ -25,7 +25,9 @@ export const episodeService = {
           episodeCount: 1, 
           totalPlays: ep.views_count?.toLocaleString() || '0'
         },
-        channelId: ep.channel_id?._id || ep.channel_id
+        channelId: ep.channel_id?._id || ep.channel_id,
+        isFollowing: ep.isFollowing,
+        isSaved: ep.isSaved
       };
     } catch (error) {
       console.error(`Error fetching episode ${id}:`, error);

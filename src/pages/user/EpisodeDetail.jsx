@@ -14,6 +14,7 @@ const EpisodeDetail = () => {
   const [moreFromHost, setMoreFromHost] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const icons = {
     back: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>,
@@ -45,6 +46,7 @@ const EpisodeDetail = () => {
              const moreData = await episodeService.getMoreFromHost(detailData.channelId);
              setMoreFromHost(moreData);
              setIsFollowing(detailData.isFollowing || false);
+             setIsSaved(detailData.isSaved || false);
           }
         }
       } catch (error) {
@@ -61,6 +63,20 @@ const EpisodeDetail = () => {
     const result = await episodeService.toggleFollowHost(data.channelId);
     if (result.success) {
       setIsFollowing(result.isFollowing);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      if (isSaved) {
+        await playlistService.removeFromPlaylist(id);
+        setIsSaved(false);
+      } else {
+        await playlistService.addToPlaylist(id);
+        setIsSaved(true);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update playlist');
     }
   };
 
@@ -134,17 +150,10 @@ const EpisodeDetail = () => {
 
           <div className="ep-actions">
             <button 
-              className="action-btn primary" 
-              onClick={async () => {
-                try {
-                  await playlistService.addToPlaylist(id);
-                  alert('Added to your playlist!');
-                } catch (err) {
-                  alert(err.response?.data?.message || 'Failed to save');
-                }
-              }}
+              className={`action-btn ${isSaved ? 'active' : 'primary'}`} 
+              onClick={handleSave}
             >
-              <i>{icons.bookmark}</i> Save to playlist
+              <i>{icons.bookmark}</i> {isSaved ? 'Saved' : 'Save to playlist'}
             </button>
             <button className="action-btn"><i>{icons.share}</i> Share</button>
             <button className="action-btn"><i>{icons.download}</i> Download</button>

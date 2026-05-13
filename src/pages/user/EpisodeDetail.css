@@ -267,6 +267,12 @@
   opacity: 0.9;
 }
 
+.action-btn.active {
+  background: rgba(113, 54, 0, 0.05);
+  border-color: rgba(113, 54, 0, 0.2);
+  color: var(--b-accent);
+}
+
 .ep-desc-title {
   font-size: 16px;
   font-weight: 700;
