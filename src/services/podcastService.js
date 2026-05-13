@@ -2,39 +2,38 @@ import api from './axiosInstance';
 
 export const podcastService = {
   /**
-   * Search for podcasts based on a query string.
-   * Fetches real channels from the backend and filters them.
+   * Search for episodes based on a query string.
+   * Fetches real approved episodes from the backend.
    */
   searchPodcasts: async (query, signal) => {
     try {
-      const response = await api.get('/channels', { signal });
-      const channels = response.data;
+      const response = await api.get('/episodes', { signal });
+      const episodes = response.data;
       
-      // Map backend Channel to frontend Podcast interface
-      const mappedPodcasts = channels.map(channel => ({
-        id: channel._id,
-        title: channel.name,
-        author: channel.host_id ? `${channel.host_id.first_name || ''} ${channel.host_id.last_name || ''}`.trim() : 'Unknown Host',
-        description: channel.description,
-        category: channel.category_id?.category_name || 'Uncategorized',
-        episodeCount: 0, // Backend doesn't provide this in list yet
-        imageUrl: channel.cover_image_key || 'https://via.placeholder.com/200',
-        addedAt: channel.created_on,
-        rating: 4.5, // Placeholder as backend doesn't have ratings yet
-        playCount: channel.views_count || 0
+      // Map backend Episode to frontend interface
+      const mappedEpisodes = episodes.map(ep => ({
+        id: ep._id,
+        title: ep.title,
+        author: ep.channel_id?.host_id ? `${ep.channel_id.host_id.first_name || ''} ${ep.channel_id.host_id.last_name || ''}`.trim() : 'Unknown Host',
+        description: ep.description,
+        category: ep.content_type_id?.type_description || 'Podcast',
+        imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key || 'https://via.placeholder.com/200',
+        addedAt: ep.created_on,
+        playCount: ep.views_count || 0,
+        duration: `${Math.floor(ep.duration_in_seconds / 60)} min`
       }));
 
-      if (!query) return mappedPodcasts;
+      if (!query) return mappedEpisodes;
 
       const lowerQuery = query.toLowerCase();
-      return mappedPodcasts.filter(podcast => 
-        podcast.title.toLowerCase().includes(lowerQuery) ||
-        podcast.author.toLowerCase().includes(lowerQuery) ||
-        podcast.category.toLowerCase().includes(lowerQuery)
+      return mappedEpisodes.filter(ep => 
+        ep.title.toLowerCase().includes(lowerQuery) ||
+        ep.author.toLowerCase().includes(lowerQuery) ||
+        ep.category.toLowerCase().includes(lowerQuery)
       );
     } catch (error) {
       if (error.name === 'CanceledError' || error.code === 'ERR_CANCELED') return [];
-      console.error('Error fetching podcasts:', error);
+      console.error('Error fetching episodes:', error);
       throw error;
     }
   },
