@@ -54,7 +54,66 @@ export const episodeService = {
   },
 
   /**
-   * Toggle follow host (Mocked as backend doesn't have follow system yet)
+   * Increment play count for an episode
+   */
+  incrementPlayCount: async (id) => {
+    try {
+      await api.post(`/episodes/${id}/play`);
+      return true;
+    } catch (error) {
+      console.error('Error incrementing play count:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Save episode to playlist
+   */
+  saveToPlaylist: async (id) => {
+    try {
+      const response = await api.post(`/playlist/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error saving to playlist:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * Remove from playlist
+   */
+  removeFromPlaylist: async (id) => {
+    try {
+      await api.delete(`/playlist/${id}`);
+      return true;
+    } catch (error) {
+      console.error('Error removing from playlist:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Get user's playlist
+   */
+  getUserPlaylist: async () => {
+    try {
+      const response = await api.get('/playlist');
+      return response.data.map(item => ({
+        id: item.podcast_id._id,
+        title: item.podcast_id.title,
+        host: item.podcast_id.channel_id?.name || 'Unknown',
+        duration: `${Math.floor(item.podcast_id.duration_in_seconds / 60)} min`,
+        imageUrl: item.podcast_id.thumbnail_key || item.podcast_id.channel_id?.cover_image_key,
+        savedAt: item.saved_at
+      }));
+    } catch (error) {
+      console.error('Error fetching playlist:', error);
+      return [];
+    }
+  },
+
+  /**
+   * Toggle follow host
    */
   toggleFollowHost: async (hostId) => {
     // Backend doesn't have a follow system yet

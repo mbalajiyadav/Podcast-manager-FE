@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { episodeService } from '../../services/episodeService';
+import { playlistService } from '../../services/playlistService';
 import './EpisodeDetail.css';
 
 const EpisodeDetail = () => {
@@ -92,17 +93,29 @@ const EpisodeDetail = () => {
               </div>
             </div>
           </div>
-
           <div className="player-card">
             <audio 
               src={data.audioUrl} 
               controls 
               style={{ width: '100%', borderRadius: '12px', background: '#2d1a0a' }}
+              onPlay={() => episodeService.incrementPlayCount(id)}
             />
           </div>
 
           <div className="ep-actions">
-            <button className="action-btn primary"><i>{icons.bookmark}</i> Save to playlist</button>
+            <button 
+              className="action-btn primary" 
+              onClick={async () => {
+                try {
+                  await playlistService.addToPlaylist(id);
+                  alert('Added to your playlist!');
+                } catch (err) {
+                  alert(err.response?.data?.message || 'Failed to save');
+                }
+              }}
+            >
+              <i>{icons.bookmark}</i> Save to playlist
+            </button>
             <button className="action-btn"><i>{icons.share}</i> Share</button>
             <button className="action-btn"><i>{icons.download}</i> Download</button>
           </div>
