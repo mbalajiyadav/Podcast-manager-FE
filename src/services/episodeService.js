@@ -22,10 +22,10 @@ export const episodeService = {
         audioUrl: ep.audio_s3_key ? `https://${process.env.VITE_AWS_BUCKET_NAME || 'podcast-manager-balaji'}.s3.ap-southeast-2.amazonaws.com/${ep.audio_s3_key}` : ep.content_url,
         imageUrl: ep.thumbnail_key || ep.channel_id?.cover_image_key || 'https://via.placeholder.com/200',
         hostStats: {
-          episodeCount: 1, // Will be updated by real logic later
+          episodeCount: 1, 
           totalPlays: ep.views_count?.toLocaleString() || '0'
         },
-        hostId: ep.channel_id?.host_id?._id
+        channelId: ep.channel_id?._id || ep.channel_id
       };
     } catch (error) {
       console.error(`Error fetching episode ${id}:`, error);

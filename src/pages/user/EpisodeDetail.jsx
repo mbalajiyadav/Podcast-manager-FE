@@ -36,9 +36,8 @@ const EpisodeDetail = () => {
         if (detailData) {
           setData(detailData);
           // Fetch more from the same channel
-          if (detailData.id) { // Use channel ID if available
-             // For now just fetch all episodes and filter or use the mock moreFromHost
-             const moreData = await episodeService.getMoreFromHost(detailData.hostId || 'host-1');
+          if (detailData.channelId) {
+             const moreData = await episodeService.getMoreFromHost(detailData.channelId);
              setMoreFromHost(moreData);
           }
         }
