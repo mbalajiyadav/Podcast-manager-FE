@@ -55,7 +55,7 @@ export default function AppRouter() {
             <Route path="/episode/:id" element={<EpisodeDetail />} />
 
             {/* Host routes */}
-            <Route element={<RoleRoute allowedRoles={['host', 'admin']} />}>
+            <Route element={<RoleRoute allowedRoles={['HOST', 'ADMIN']} />}>
               <Route path="/host/dashboard" element={<HostDashboard />} />
               <Route path="/host/listings" element={<Listings />} />
               <Route path="/host/upload" element={<UploadEpisode />} />
@@ -63,7 +63,7 @@ export default function AppRouter() {
             </Route>
 
             {/* Admin routes */}
-            <Route element={<RoleRoute allowedRoles={['admin']} />}>
+            <Route element={<RoleRoute allowedRoles={['ADMIN']} />}>
               <Route path="/admin/dashboard" element={<AdminPanel />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/episodes" element={<AdminEpisodes />} />
