@@ -121,14 +121,20 @@ export const hostService = {
    */
   getChannelInfo: async () => {
     try {
-      const response = await api.get('/channels/my');
-      const channels = response.data;
+      const [channelRes, episodesRes] = await Promise.all([
+        api.get('/channels/my'),
+        api.get('/episodes/my')
+      ]);
+      
+      const channels = channelRes.data;
+      const episodes = episodesRes.data;
+
       if (channels.length > 0) {
-        const channel = channels[0]; // Assuming one channel per host for now
+        const channel = channels[0];
         return {
           id: channel._id,
           name: channel.name,
-          episodeCount: 0, // Need aggregation
+          episodeCount: episodes.length,
           role: 'Host'
         };
       }

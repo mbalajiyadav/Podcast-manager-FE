@@ -73,8 +73,15 @@ const HostDashboard = () => {
         <button className="upload-btn" onClick={() => navigate('/host/upload')}><i>{icons.upload}</i> Upload episode</button>
       </div>
 
-      <div className="table-container">
-        <table className="ep-table">
+      <div style={{ 
+        overflowX: 'auto', 
+        width: '100%', 
+        WebkitOverflowScrolling: 'touch',
+        background: '#fff',
+        border: '1px solid var(--b-border)',
+        borderRadius: '12px'
+      }}>
+        <table className="ep-table" style={{ minWidth: '650px', width: '100%' }}>
           <thead>
             <tr>
               <th>Episode</th>
